@@ -1,0 +1,52 @@
+# Dependencies
+node_modules
+.pnpm-store
+.npm
+.yarn
+.yarn/cache
+.yarn/install-state.gz
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/patches
+
+# Build output
+.next
+out
+dist
+build
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE / OS
+.cursor
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Env (Coolify inyecta las variables; no incluir secretos en la imagen)
+.env
+.env.*
+!.env.example
+
+# Logs y tests
+*.log
+npm-debug.log*
+.npm
+coverage
+.nyc_output
+*.test.*
+*.spec.*
+
+# Documentación / misc
+README.md
+LICENSE
+*.md
+.dockerignore
+Dockerfile
+docker-compose*
