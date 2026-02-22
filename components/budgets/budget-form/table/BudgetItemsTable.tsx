@@ -4,12 +4,12 @@ import {
   getBudgetItemColumns,
   transformBudgetsToItemRows,
 } from './budgetItemsColumns';
-import type { Budget } from '@/shared/types';
+import type { Budget, BudgetItemRow } from '@/shared/types';
 
 interface BudgetItemsTableProps {
   budgets: Budget[];
-  onDelete?: (budget: Budget) => void;
-  onEdit?: (budget: Budget) => void;
+  onDelete?: (item: BudgetItemRow) => void;
+  onEdit?: (item: BudgetItemRow) => void;
   isLoading?: boolean;
   error?: boolean;
 }

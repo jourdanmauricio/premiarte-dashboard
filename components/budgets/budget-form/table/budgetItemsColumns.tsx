@@ -1,10 +1,31 @@
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { BudgetItemRow } from "@/shared/types";
+import type { Budget, BudgetItemRow } from "@/shared/types";
 import { Button } from "@/components/ui/button";
 import { TruncatedCell } from "@/components/ui/custom/truncatedCell";
 import Image from "next/image";
+
+export function transformBudgetsToItemRows(budgets: Budget[]): BudgetItemRow[] {
+  return budgets.flatMap(
+    (budget) =>
+      budget.items?.map((item) => ({
+        id: item.id,
+        productId: item.productId,
+        imageUrl: item.imageUrl,
+        imageAlt: item.imageAlt,
+        name: item.name,
+        slug: item.slug,
+        sku: item.sku,
+        retailPrice: String(item.retailPrice),
+        wholesalePrice: String(item.wholesalePrice),
+        price: String(item.price),
+        quantity: String(item.quantity),
+        amount: String(item.amount),
+        observation: item.observation,
+      })) ?? []
+  );
+}
 
 type DataTableColumnsProps = {
   onDelete: (item: BudgetItemRow) => void;
