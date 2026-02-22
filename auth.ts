@@ -20,6 +20,7 @@ declare module "@auth/core/jwt" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true, // Necesario en producción (Coolify, proxy): evita UntrustedHost
   providers: [
     Credentials({
       credentials: {
