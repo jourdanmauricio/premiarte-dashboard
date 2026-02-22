@@ -1,14 +1,8 @@
-export { authProxy as proxy } from "@/auth";
+import { authMiddleware } from "@/auth";
+
+// Next.js 16: proxy reemplaza a middleware. Protege rutas y redirige al login si no hay sesión.
+export const proxy = authMiddleware;
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
-  ],
+  matcher: ["/", "/dashboard/:path*"],
 };

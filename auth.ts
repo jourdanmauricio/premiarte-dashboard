@@ -81,8 +81,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 });
 
-// Helper para el proxy de autenticación (Next.js 16)
-export const authProxy = auth((req) => {
+// Middleware de autenticación: protege /dashboard y redirige al login
+export const authMiddleware = auth((req) => {
   const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
 
@@ -95,4 +95,6 @@ export const authProxy = auth((req) => {
   if (isLoggedIn && pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
   }
+
+  return NextResponse.next();
 });
