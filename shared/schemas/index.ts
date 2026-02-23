@@ -7,3 +7,4 @@ export * from "./budgetSchema";
 export * from "./customerSchema";
 export * from "./responsibleSchema";
 export * from "./orderSchema";
+export * from "./contactSchema";
