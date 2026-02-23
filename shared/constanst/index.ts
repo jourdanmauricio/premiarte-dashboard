@@ -15,6 +15,7 @@ import {
   IconFileInvoice,
   IconShield,
   IconMessageCircle,
+  IconMail,
 } from "@tabler/icons-react";
 
 export const menuItems = {
@@ -43,6 +44,11 @@ export const menuItems = {
       title: "Contactos",
       url: "/dashboard/contacts",
       icon: IconMessageCircle,
+    },
+    {
+      title: "Newsletters",
+      url: "/dashboard/newsletters",
+      icon: IconMail,
     },
     {
       title: "Clientes",

@@ -7,11 +7,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Avatar } from '@/components/ui/avatar';
-import { TriangleAlert } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+} from "@/components/ui/alert-dialog";
+import { Avatar } from "@/components/ui/avatar";
+import { TriangleAlert } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 type CustomAlertDialogProps = {
   open: boolean;
@@ -34,7 +34,7 @@ export default function CustomAlertDialog({
   continueButtonText,
   dialogContentClassname,
 }: CustomAlertDialogProps) {
-  const DIALOG_CONTENT_CL = dialogContentClassname ?? 'max-w-xl p-16';
+  const DIALOG_CONTENT_CL = dialogContentClassname ?? "max-w-xl p-16";
   function handleOnOpenChange() {
     onCloseDialog();
   }
@@ -42,30 +42,33 @@ export default function CustomAlertDialog({
   return (
     <AlertDialog open={open} onOpenChange={handleOnOpenChange}>
       <AlertDialogContent className={DIALOG_CONTENT_CL}>
-        <AlertDialogHeader>
-          <Avatar className='bg-destructive-light mb-6 h-[60px] w-[60px] self-center text-center'>
-            <TriangleAlert
-              width={30}
-              height={30}
-              className='text-destructive mx-auto self-center'
-            />
-          </Avatar>
-          <AlertDialogTitle className='text-red text-destructive-dark text-center text-[32px]'>
+        <AlertDialogHeader className="text-center">
+          <div className="flex justify-center text-center mx-auto">
+            <Avatar className="bg-destructive-light mb-6 h-[60px] w-[60px] self-center text-center">
+              <TriangleAlert
+                width={30}
+                height={30}
+                className="text-destructive mx-auto self-center"
+              />
+            </Avatar>
+          </div>
+          <AlertDialogTitle className="text-red text-destructive-dark text-center text-[32px]">
             {title}
           </AlertDialogTitle>
-          <AlertDialogDescription className='text-grey-800 text-center text-base whitespace-pre-line'>
+          <AlertDialogDescription className="text-grey-800 text-center text-base whitespace-pre-line">
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className='w-1/2 border border-neutral-200'>
+          <AlertDialogCancel className="w-1/2 border border-neutral-200 mt-8">
             {cancelButtonText}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onContinueClick}
             className={cn(
-              buttonVariants({ variant: 'destructive' }),
-              'bg-destructive hover:bg-destructive-light w-1/2'
+              buttonVariants({ variant: "destructive" }),
+              "bg-destructive hover:bg-destructive-light w-1/2",
+              "mt-8",
             )}
           >
             {continueButtonText}
