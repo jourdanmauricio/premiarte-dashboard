@@ -8,3 +8,5 @@ export * from "./customerSchema";
 export * from "./responsibleSchema";
 export * from "./orderSchema";
 export * from "./contactSchema";
+export * from "./forgotPasswordSchema";
+export * from "./resetPasswordSchema";

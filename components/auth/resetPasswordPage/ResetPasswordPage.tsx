@@ -1,0 +1,128 @@
+"use client";
+
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { FieldErrors, useForm } from "react-hook-form";
+
+import { toast } from "sonner";
+import { Form } from "@/components/ui/form";
+import { resetPasswordFormSchema } from "@/shared/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputField } from "@/components/ui/custom/input-field";
+import { SubmitButton } from "@/components/ui/custom/submit-button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import api from "@/lib/axios";
+import { getErrorMessage } from "@/lib/get-error-message";
+import { useState } from "react";
+
+const ResetPasswordPage = ({ token }: { token: string }) => {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
+    resolver: zodResolver(resetPasswordFormSchema),
+    defaultValues: {
+      token: token,
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof resetPasswordFormSchema>) => {
+    try {
+      const res = await api.post("/auth/reset-password", values);
+      if (res.status !== 200) {
+        toast.error("Error al resetear la contraseña");
+        return;
+      }
+      toast.success("Contraseña reseteada correctamente");
+      router.push("/");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+  const handleSubmitError = (
+    errors: FieldErrors<z.infer<typeof resetPasswordFormSchema>>,
+  ) => {
+    console.log(errors);
+  };
+  return (
+    <Card className="mx-auto w-full max-w-xl">
+      <CardHeader>
+        <CardTitle className="text-center">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <span className="text-4xl font-semibold">
+              Premiarte - Recuperar contraseña
+            </span>
+            <span className="text-4xl font-semibold">🔐</span>
+            <p className="text-[16px] text-neutral-300 my-8">
+              Ingresa tu email para recibir un enlace de recuperación de
+              contraseña.
+            </p>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent
+        style={{ "--spacing": "0.222222rem" } as React.CSSProperties}
+      >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit, handleSubmitError)}>
+            <div className="flex w-full flex-col gap-10">
+              <InputField
+                label="Password"
+                name="password"
+                placeholder="Password"
+                form={form}
+                type={showPassword ? "text" : "password"}
+                icon={
+                  showPassword ? (
+                    <Eye className="h-4 w-4 text-neutral-500" />
+                  ) : (
+                    <EyeOff className="h-4 w-4 text-neutral-500" />
+                  )
+                }
+                iconOnClick={() => {
+                  setShowPassword(!showPassword);
+                }}
+              />
+
+              <InputField
+                label="Confirm Password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                form={form}
+                type={showConfirmPassword ? "text" : "password"}
+                icon={
+                  showConfirmPassword ? (
+                    <Eye className="h-4 w-4 text-neutral-500" />
+                  ) : (
+                    <EyeOff className="h-4 w-4 text-neutral-500" />
+                  )
+                }
+                iconOnClick={() => {
+                  setShowConfirmPassword(!showConfirmPassword);
+                }}
+              />
+
+              <p className="text-sm text-neutral-500 text-right">
+                <Link href="/">Volver al login</Link>
+              </p>
+            </div>
+
+            <div className="mt-10 flex justify-end">
+              <SubmitButton
+                className="min-w-[150px]"
+                text="Recuperar contraseña"
+                isLoading={form.formState.isSubmitting}
+              />
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+};
+
+export { ResetPasswordPage };

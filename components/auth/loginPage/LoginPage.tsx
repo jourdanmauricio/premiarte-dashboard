@@ -5,6 +5,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail } from "lucide-react";
+import Link from "next/link";
 import { FieldErrors, useForm } from "react-hook-form";
 
 import { toast } from "sonner";
@@ -54,7 +55,9 @@ const LoginPage = () => {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent
+        style={{ "--spacing": "0.222222rem" } as React.CSSProperties}
+      >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, handleSubmitError)}>
             <div className="flex w-full flex-col gap-10">
@@ -63,7 +66,7 @@ const LoginPage = () => {
                 name="email"
                 placeholder="Email"
                 form={form}
-                icon={<Mail className="h-4 w-4 text-neutral-500" />}
+                icon={<Mail className="h-6 w-6 text-neutral-500" />}
                 autoFocus
               />
 
@@ -84,6 +87,10 @@ const LoginPage = () => {
                   setShowPassword(!showPassword);
                 }}
               />
+
+              <p className="text-sm text-neutral-500 text-right">
+                <Link href="/forgot-password">¿Olvidaste tu contraseña?</Link>
+              </p>
             </div>
 
             <div className="mt-10 flex justify-end">
