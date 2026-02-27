@@ -491,7 +491,7 @@ export const PDF = ({ budget, responsible, customerData }: PDFProps) => {
             {budget.items.map((item, index) => (
               <View key={index} style={styles.tableRow}>
                 <Text style={[styles.tableCell, styles.cellProduct]}>
-                  {item.name}
+                  {item.product.name}
                 </Text>
 
                 <Text style={[styles.tableCell, styles.cellQuantity]}>
