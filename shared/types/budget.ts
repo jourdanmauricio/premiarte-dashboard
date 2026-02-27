@@ -22,6 +22,8 @@ export interface BudgetItem {
 
 export interface Budget {
   id: number;
+  number?: string; // Número de presupuesto generado automáticamente en el backend
+  showCuit?: boolean; // Si se debe mostrar el CUIT del cliente en el PDF
   customerId: number;
   responsibleId: string;
   name: string;
@@ -56,6 +58,7 @@ export interface CreateBudgetData {
   responsibleId?: number;
   userId?: string;
   observation?: string;
+  showCuit?: boolean;
   totalAmount: number;
   type: string;
   status: string;
@@ -66,6 +69,7 @@ export interface UpdateBudgetData {
   customerId?: number;
   responsibleId?: number;
   observation?: string;
+  showCuit?: boolean;
   status?: Budget["status"];
   isRead?: boolean;
   expiresAt?: string;

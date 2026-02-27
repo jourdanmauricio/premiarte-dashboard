@@ -30,6 +30,7 @@ const defaultValues = {
   createdAt: new Date(),
   expiresAt: new Date(new Date().setDate(new Date().getDate() + 15)),
   status: "pending" as BudgetStatus,
+  showCuit: false,
   observation: "",
   totalAmount: "",
   items: [],
@@ -51,7 +52,6 @@ export const useBudgetForm = () => {
     mode === "EDIT" ? true : false,
   );
 
-  console.log("Budget", budget);
   const { isLoading: isResponsiblesLoading } = useGetResponsibles();
   const createBudgetMutation = useCreateBudget();
   const updateBudgetMutation = useUpdateBudget();
@@ -98,6 +98,7 @@ export const useBudgetForm = () => {
           totalAmount: budget.totalAmount ? budget.totalAmount.toString() : "0",
           type: budget.type || "retail",
           status: budget.status as BudgetStatus,
+          showCuit: budget.showCuit ?? false,
           createdAt: budget.createdAt ? new Date(budget.createdAt) : undefined,
           expiresAt: budget.expiresAt ? new Date(budget.expiresAt) : undefined,
           approvedAt: budget.approvedAt
@@ -202,6 +203,7 @@ export const useBudgetForm = () => {
       customerId: data.customerId || 0,
       responsibleId: Number(data.responsibleId),
       observation: data.observation || "",
+      showCuit: data.showCuit ?? false,
       expiresAt: data.expiresAt?.toISOString() || undefined,
       type: data.type || "retail",
       totalAmount: data.totalAmount ? parseFloat(data.totalAmount) : 0,
@@ -217,7 +219,7 @@ export const useBudgetForm = () => {
 
     if (mode === "CREATE") {
       await createBudgetMutation.mutateAsync(budgetData as unknown as Budget);
-      router.push(`/dashboard/budgets/${id}`);
+      // La redirección a /dashboard/budgets la maneja onSuccess en useCreateBudget
     } else {
       await updateBudgetMutation.mutateAsync({
         id: id?.toString() || "",

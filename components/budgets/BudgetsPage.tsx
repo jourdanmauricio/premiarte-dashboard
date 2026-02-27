@@ -46,6 +46,8 @@ const BudgetsPage = () => {
   const createOrder = useCreateOrder();
   const updateBudgetStatus = useUpdateBudgetStatus();
 
+  console.log("data", data);
+
   const handleDeleteBudget = useCallback((budget: Budget) => {
     setCurrentBudget(budget);
     setDeleteModalIsOpen(true);

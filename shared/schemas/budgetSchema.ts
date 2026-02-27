@@ -24,6 +24,7 @@ export const BudgetFormSchema = z.object({
   phone: z.string().min(1, "El teléfono es requerido"),
   type: z.enum(["wholesale", "retail"]),
   status: z.enum(["pending", "sent", "approved", "closed"]),
+  showCuit: z.boolean(),
   totalAmount: z.string().min(0, "El total debe ser mayor o igual a 0"),
   observation: z.string().optional(),
   createdAt: z.date().optional(),

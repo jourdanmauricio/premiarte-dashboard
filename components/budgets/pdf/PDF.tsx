@@ -350,7 +350,7 @@ export const PDF = ({ budget, responsible, customerData }: PDFProps) => {
                 N° de presupuesto:
               </Text>
               <Text style={[styles.text, { width: "50%", textAlign: "right" }]}>
-                {budget.id}
+                {budget.number ?? budget.id}
               </Text>
             </View>
           </View>
@@ -376,6 +376,26 @@ export const PDF = ({ budget, responsible, customerData }: PDFProps) => {
               {customerData?.name}
             </Text>
           </View>
+          {budget.showCuit && customerData?.document && (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                gap: 10,
+                width: "100%",
+              }}
+            >
+              <Text
+                style={[styles.text, { width: "15%", fontWeight: "semibold" }]}
+              >
+                CUIT:
+              </Text>
+              <Text style={[styles.text, { width: "85%" }]}>
+                {customerData.document}
+              </Text>
+            </View>
+          )}
           <View
             style={{
               display: "flex",

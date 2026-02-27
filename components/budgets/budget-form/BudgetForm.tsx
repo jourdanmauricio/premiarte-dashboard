@@ -12,6 +12,7 @@ import { budgetStatusList, customerTypeList } from "@/shared/constanst";
 import { InputRadioGroup } from "@/components/ui/custom/input-radio-group";
 
 import InputNumberField from "@/components/ui/custom/input-number-field";
+import BooleanCheckbox from "@/components/ui/custom/boolean-checkbox";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
 import { CustomDatePicker } from "@/components/ui/custom/custom-date-picker";
 import { ItemModal } from "@/components/budgets/budget-form/ItemModal";
@@ -130,6 +131,12 @@ const BudgetForm = () => {
                 placeholder="Estado"
                 form={form}
                 list={budgetStatusList}
+              />
+              <BooleanCheckbox
+                label="Mostrar CUIT del cliente en el PDF"
+                name="showCuit"
+                form={form}
+                className="col-span-2"
               />
               <TextareaField
                 label="Observación"
