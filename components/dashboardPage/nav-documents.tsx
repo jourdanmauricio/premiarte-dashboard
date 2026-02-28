@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { type Icon } from '@tabler/icons-react';
+import { type Icon } from "@tabler/icons-react";
 
 import {
   SidebarGroup,
@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   // useSidebar,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 
 export function NavDocuments({
   items,
@@ -23,8 +23,8 @@ export function NavDocuments({
   // const { isMobile } = useSidebar();
 
   return (
-    <SidebarGroup className='group-data-[collapsible=icon]:hidden'>
-      <SidebarGroupLabel>Documents</SidebarGroupLabel>
+    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+      <SidebarGroupLabel>Herramintas</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>

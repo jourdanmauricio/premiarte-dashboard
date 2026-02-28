@@ -18,6 +18,14 @@ export function useCreateCategory() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categories"] });
       toast.success("Categoría creada correctamente");
+      try {
+        await api.post("/revalidate", {
+          type: "tags",
+          tags: ["categories", "featured-categories"],
+        });
+      } catch {
+        // Revalidación en el front opcional; no bloqueamos la UX
+      }
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -34,6 +42,14 @@ export function useUpdateCategory() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categories"] });
       toast.success("Categoría modificada correctamente");
+      try {
+        await api.post("/revalidate", {
+          type: "tags",
+          tags: ["categories", "featured-categories"],
+        });
+      } catch {
+        // Revalidación en el front opcional; no bloqueamos la UX
+      }
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -49,6 +65,14 @@ export function useDeleteCategory() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categories"] });
       toast.success("Categoría eliminada correctamente");
+      try {
+        await api.post("/revalidate", {
+          type: "tags",
+          tags: ["categories", "featured-categories"],
+        });
+      } catch {
+        // Revalidación en el front opcional; no bloqueamos la UX
+      }
     },
     onError: (error: Error) => {
       toast.error(error.message);

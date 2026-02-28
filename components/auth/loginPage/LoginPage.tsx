@@ -50,7 +50,7 @@ const LoginPage = () => {
       <CardHeader>
         <CardTitle className="text-center">
           <div className="flex flex-col items-center justify-center gap-4">
-            <span className="text-4xl font-semibold">Premiarte - Login</span>
+            <span className="text-4xl font-semibold">PremiArte - Login</span>
             <span className="text-4xl font-semibold">🔐</span>
           </div>
         </CardTitle>

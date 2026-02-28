@@ -7,7 +7,7 @@ import { AppSidebar } from "@/components/dashboardPage/app-sidebar";
 import { QueryClientProvider } from "@/components/providers/query-client-provider";
 
 export const metadata: Metadata = {
-  title: "Premiarte Dashboard",
+  title: "PremiArte Dashboard",
   description:
     "A fully responsive analytics dashboard featuring dynamic charts, interactive tables, a collapsible sidebar, and a light/dark mode theme switcher. Built with modern web technologies, it ensures seamless performance across devices, offering an intuitive user interface for data visualization and exploration.",
 };

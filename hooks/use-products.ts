@@ -22,6 +22,14 @@ export function useCreateProduct() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["products"] });
       toast.success("Producto creado correctamente");
+      try {
+        await api.post("/revalidate", {
+          type: "tags",
+          tags: ["products", "featured-products"],
+        });
+      } catch {
+        // Revalidación en el front opcional; no bloqueamos la UX
+      }
     },
     onError: (error) => {
       toast.error(getErrorMessage(error));
@@ -86,6 +94,14 @@ export function useDeleteProduct() {
         queryClient.invalidateQueries({ queryKey: ["categories"] }),
         queryClient.invalidateQueries({ queryKey: ["images"] }),
       ]);
+      try {
+        await api.post("/revalidate", {
+          type: "tags",
+          tags: ["products", "featured-products"],
+        });
+      } catch {
+        // Revalidación en el front opcional; no bloqueamos la UX
+      }
     },
     onError: (error) => {
       toast.error(getErrorMessage(error));

@@ -40,7 +40,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="#">
                 <IconHome2 className="text-primary !size-5" />
-                <span className="text-base font-semibold">Premiarte</span>
+                <span className="text-2xl font-semibold">PremiArte</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

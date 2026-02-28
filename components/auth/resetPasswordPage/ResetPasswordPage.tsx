@@ -54,7 +54,7 @@ const ResetPasswordPage = ({ token }: { token: string }) => {
         <CardTitle className="text-center">
           <div className="flex flex-col items-center justify-center gap-4">
             <span className="text-4xl font-semibold">
-              Premiarte - Recuperar contraseña
+              PremiArte - Recuperar contraseña
             </span>
             <span className="text-4xl font-semibold">🔐</span>
             <p className="text-[16px] text-neutral-300 my-8">
