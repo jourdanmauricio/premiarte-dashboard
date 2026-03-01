@@ -3,8 +3,14 @@ import { useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HomePanel } from "@/components/settingsPage/panels/homePanel/HomePanel";
-// import { HomePanels } from "@/components/dashboard/settings/sections/home/HomePanels";
-//import { ResponsiblePanel } from "@/components/dashboard/settings/sections/responsible/ResponsiblePanel";
+import { ResponsiblesPanel } from "@/components/settingsPage/panels/responsiblesPanel/ResponsiblesPanel";
+import { UsersPanel } from "@/components/settingsPage/panels/usersPanel/UsersPanel";
+import {
+  IconHome,
+  IconMessageCircle,
+  IconShield,
+  IconUser,
+} from "@tabler/icons-react";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -12,7 +18,7 @@ const SettingsPage = () => {
   return (
     <div className="rounded-lg shadow-md py-6 p-6 w-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold">Configuración de Páginas</h2>
+        <h2 className="text-3xl font-bold">Configuración</h2>
       </div>
 
       <div className="flex-1 flex flex-col min-h-0 overflow-x-auto">
@@ -22,9 +28,22 @@ const SettingsPage = () => {
           className="flex flex-col h-full"
         >
           <TabsList className="grid w-full grid-cols-5 shrink-0">
-            <TabsTrigger value="home">Home</TabsTrigger>
-            <TabsTrigger value="responsible">Responsables</TabsTrigger>
-            <TabsTrigger value="contact">Contacto</TabsTrigger>
+            <TabsTrigger value="home">
+              Home
+              <IconHome className="w-4 h-4" />
+            </TabsTrigger>
+            <TabsTrigger value="responsible">
+              Responsables
+              <IconShield className="w-4 h-4" />
+            </TabsTrigger>
+            <TabsTrigger value="users">
+              Usuarios
+              <IconUser className="w-4 h-4" />
+            </TabsTrigger>
+            <TabsTrigger value="contact">
+              Contacto
+              <IconMessageCircle className="w-4 h-4" />
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="home" className="flex-1 mt-4 overflow-hidden">
@@ -35,8 +54,11 @@ const SettingsPage = () => {
             value="responsible"
             className="flex-1 mt-4 overflow-auto"
           >
-            {/* <ResponsiblePanel /> */}
-            <span>Responsables</span>
+            <ResponsiblesPanel />
+          </TabsContent>
+
+          <TabsContent value="users" className="flex-1 mt-4 overflow-auto">
+            <UsersPanel />
           </TabsContent>
 
           <TabsContent value="contact" className="flex-1 mt-4 overflow-auto">

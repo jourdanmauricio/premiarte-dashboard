@@ -13,3 +13,9 @@ export interface UpdateSettingsData {
   key?: string;
   value?: string;
 }
+
+export interface SocialLink {
+  href: string;
+  label: string;
+  image: number;
+}

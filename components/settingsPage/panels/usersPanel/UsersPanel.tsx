@@ -5,14 +5,14 @@ import { useCallback, useMemo, useState } from "react";
 import { CustomTable } from "@/components/ui/custom/CustomTable";
 import { useDeleteUser, useGetUsers } from "@/hooks/use-users";
 import { User } from "@/shared/types";
-import { getColumns } from "@/components/usersPage/table/columns";
+import { getColumns } from "@/components/settingsPage/panels/usersPanel/table/columns";
 import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
-import { Modal } from "@/components/usersPage/Modal";
+import { Modal } from "@/components/settingsPage/panels/usersPanel/Modal";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
-import { ModalChangePassword } from "@/components/usersPage/ModalChangePassword";
+import { ModalChangePassword } from "@/components/settingsPage/panels/usersPanel/ModalChangePassword";
 
-const UsersPage = () => {
+const UsersPanel = () => {
   const { data: users, isLoading, error } = useGetUsers();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -62,7 +62,7 @@ const UsersPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Usuarios</h1>
+        <h2 className="text-2xl font-bold">Gestión de Usuarios</h2>
         <Button
           className="ml-auto flex items-center gap-2"
           onClick={handleCreateUser}
@@ -121,4 +121,4 @@ const UsersPage = () => {
   );
 };
 
-export { UsersPage };
+export { UsersPanel };

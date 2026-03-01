@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/button";
 import type { Responsible } from "@/shared/types";
 import { CustomTable } from "@/components/ui/custom/CustomTable";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
-import { ResponsibleModal } from "@/components/responsiblesPage/ResponsibleModal";
-import { getResponsibleColumns } from "@/components/responsiblesPage/table/columns";
+import { ResponsibleModal } from "@/components/settingsPage/panels/responsiblesPanel/ResponsibleModal";
+import { getResponsibleColumns } from "@/components/settingsPage/panels/responsiblesPanel/table/columns";
 import {
   useDeleteResponsible,
   useGetResponsibles,
 } from "@/hooks/use-responsibles";
 
-const ResponsiblesPage = () => {
+const ResponsiblesPanel = () => {
   const [currentResponsible, setCurrentResponsible] =
     useState<Responsible | null>(null);
   const [responsibleModalIsOpen, setResponsibleModalIsOpen] = useState(false);
@@ -56,7 +56,7 @@ const ResponsiblesPage = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold">Gestión de Responsables</h2>
+        <h2 className="text-2xl font-bold">Gestión de Responsables</h2>
         <Button variant="default" onClick={handleAddResponsible}>
           <PlusIcon className="size-5" />
         </Button>
@@ -103,4 +103,4 @@ const ResponsiblesPage = () => {
   );
 };
 
-export { ResponsiblesPage };
+export { ResponsiblesPanel };

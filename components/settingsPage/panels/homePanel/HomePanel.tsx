@@ -11,12 +11,20 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { Settings, UpdateSettingsData } from "@/shared/types";
 import { Separator } from "@/components/ui/separator";
-import { MenuPanel } from "./MenuPanel";
+import { MenuPanel } from "./menu-panel/MenuPanel";
 import { SubmitButton } from "@/components/ui/custom/submit-button";
 import { Button } from "@/components/ui/button";
+import { SliderPanel } from "@/components/settingsPage/panels/homePanel/slider-panel/SliderPanel";
+import HeroPanel from "@/components/settingsPage/panels/homePanel/hero-panel/HeroPanel";
+import { FeaturedProductsPanel } from "@/components/settingsPage/panels/homePanel/products-panel/FeatuedProductsPanel";
+import ServicesPanel from "@/components/settingsPage/panels/homePanel/services-panel/servicesPanel";
+import { FeaturedCategoriesPanel } from "@/components/settingsPage/panels/homePanel/categories-panel/FeaturedCategoriesPanel";
+import TestimonialsPanel from "@/components/settingsPage/panels/homePanel/testimonials-panel/TestimonialsPanel";
+import { FooterPanel } from "@/components/settingsPage/panels/homePanel/footer-panel/FooterPanel";
+import { LoaderIcon } from "lucide-react";
 
 const HomePanel = () => {
-  const { data: settingsData } = useGetSettings();
+  const { data: settingsData, isLoading: isLoadingSettings } = useGetSettings();
   const homeSetting = settingsData?.find((s: Settings) => s.key === "home");
   const homeSettingId = homeSetting ? String(homeSetting.id) : null;
   const { mutate: updateSettings, isPending: isUpdatingSettings } =
@@ -96,7 +104,9 @@ const HomePanel = () => {
   const onSubmit = (data: z.infer<typeof SettingsFormSchema>) => {
     const id = homeSettingId;
     if (!id) {
-      toast.error("No se encontró la configuración 'home'. Cárgala desde la API primero.");
+      toast.error(
+        "No se encontró la configuración 'home'. Cárgala desde la API primero.",
+      );
       return;
     }
     updateSettings({
@@ -106,6 +116,14 @@ const HomePanel = () => {
   };
 
   const onError = () => console.log("errors", form.formState.errors);
+
+  if (isLoadingSettings) {
+    return (
+      <div className="flex justify-center items-center h-full mt-10">
+        <LoaderIcon className="w-4 h-4 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -117,6 +135,56 @@ const HomePanel = () => {
             className="my-4 border border-primary/50"
             orientation="horizontal"
           />
+
+          <SliderPanel form={form} images={images || []} />
+
+          <Separator
+            className="my-4 border border-primary/50"
+            orientation="horizontal"
+          />
+
+          <HeroPanel form={form} images={images || []} />
+
+          <Separator
+            className="my-4 border border-primary/50"
+            orientation="horizontal"
+          />
+
+          <FeaturedProductsPanel form={form} />
+
+          <Separator
+            className="my-4 border border-primary/50"
+            orientation="horizontal"
+          />
+
+          <ServicesPanel form={form} images={images || []} />
+
+          <Separator
+            className="my-4 border border-primary/50"
+            orientation="horizontal"
+          />
+
+          <FeaturedCategoriesPanel form={form} />
+
+          <Separator
+            className="my-4 border border-primary/50"
+            orientation="horizontal"
+          />
+
+          <TestimonialsPanel form={form} />
+
+          <Separator
+            className="my-4 border border-primary/50"
+            orientation="horizontal"
+          />
+
+          <FooterPanel form={form} images={images || []} />
+
+          <Separator
+            className="my-4 border border-primary/50"
+            orientation="horizontal"
+          />
+
           <div className="flex justify-end gap-2 mt-12">
             <Button type="button" className="min-w-[150px]" variant="outline">
               Cancelar

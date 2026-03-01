@@ -31,16 +31,6 @@ export const menuItems = {
       icon: IconDashboard,
     },
     {
-      title: "Usuarios",
-      url: "/dashboard/users",
-      icon: IconUserCircle,
-    },
-    {
-      title: "Responsables",
-      url: "/dashboard/responsibles",
-      icon: IconShield,
-    },
-    {
       title: "Contactos",
       url: "/dashboard/contacts",
       icon: IconMessageCircle,

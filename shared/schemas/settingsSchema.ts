@@ -85,3 +85,10 @@ const HomeSettingsSchema = z.object({
 export const SettingsFormSchema = z.object({
   home: HomeSettingsSchema,
 });
+
+export const SocialLinkFormSchema = z.object({
+  // name: z.string().min(1, { message: "Nombre requerido" }),
+  href: z.string().min(1, { message: "Enlace requerido" }),
+  label: z.string().min(1, { message: "Etiqueta requerida" }),
+  image: z.number().min(1, { message: "Imagen requerida" }),
+});
