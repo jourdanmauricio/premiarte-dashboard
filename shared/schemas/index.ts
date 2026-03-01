@@ -10,3 +10,4 @@ export * from "./orderSchema";
 export * from "./contactSchema";
 export * from "./forgotPasswordSchema";
 export * from "./resetPasswordSchema";
+export * from "./settingsSchema";

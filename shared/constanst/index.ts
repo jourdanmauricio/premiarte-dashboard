@@ -78,8 +78,8 @@ export const menuItems = {
   ],
   navSecondary: [
     {
-      title: "Settings",
-      url: "#",
+      title: "Configuración",
+      url: "/dashboard/settings",
       icon: IconSettings,
     },
     {

@@ -1,0 +1,51 @@
+"use client";
+import { useState } from "react";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { HomePanel } from "@/components/settingsPage/panels/homePanel/HomePanel";
+// import { HomePanels } from "@/components/dashboard/settings/sections/home/HomePanels";
+//import { ResponsiblePanel } from "@/components/dashboard/settings/sections/responsible/ResponsiblePanel";
+
+const SettingsPage = () => {
+  const [activeTab, setActiveTab] = useState("home");
+
+  return (
+    <div className="rounded-lg shadow-md py-6 p-6 w-full">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold">Configuración de Páginas</h2>
+      </div>
+
+      <div className="flex-1 flex flex-col min-h-0 overflow-x-auto">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="flex flex-col h-full"
+        >
+          <TabsList className="grid w-full grid-cols-5 shrink-0">
+            <TabsTrigger value="home">Home</TabsTrigger>
+            <TabsTrigger value="responsible">Responsables</TabsTrigger>
+            <TabsTrigger value="contact">Contacto</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="home" className="flex-1 mt-4 overflow-hidden">
+            <HomePanel />
+          </TabsContent>
+
+          <TabsContent
+            value="responsible"
+            className="flex-1 mt-4 overflow-auto"
+          >
+            {/* <ResponsiblePanel /> */}
+            <span>Responsables</span>
+          </TabsContent>
+
+          <TabsContent value="contact" className="flex-1 mt-4 overflow-auto">
+            <span>Contacto</span>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export { SettingsPage };
