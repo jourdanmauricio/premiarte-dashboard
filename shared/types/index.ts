@@ -9,3 +9,4 @@ export * from "./order";
 export * from "./contact";
 export * from "./newsletter";
 export * from "./settings";
+export * from "./database";

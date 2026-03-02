@@ -91,7 +91,7 @@ export const menuItems = {
     },
     {
       name: "Base de datos",
-      url: "#",
+      url: "/dashboard/database",
       icon: IconDatabase,
     },
     {
