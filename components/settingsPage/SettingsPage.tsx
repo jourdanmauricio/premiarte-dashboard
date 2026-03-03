@@ -10,7 +10,9 @@ import {
   IconMessageCircle,
   IconShield,
   IconUser,
+  IconPaint,
 } from "@tabler/icons-react";
+import { VariantsPanel } from "@/components/settingsPage/panels/variantsPanel/VariantsPanel";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -40,6 +42,10 @@ const SettingsPage = () => {
               Usuarios
               <IconUser className="w-4 h-4" />
             </TabsTrigger>
+            <TabsTrigger value="variants">
+              Variaciones
+              <IconPaint className="w-4 h-4" />
+            </TabsTrigger>
             <TabsTrigger value="contact">
               Contacto
               <IconMessageCircle className="w-4 h-4" />
@@ -59,6 +65,10 @@ const SettingsPage = () => {
 
           <TabsContent value="users" className="flex-1 mt-4 overflow-auto">
             <UsersPanel />
+          </TabsContent>
+
+          <TabsContent value="variants" className="flex-1 mt-4 overflow-auto">
+            <VariantsPanel />
           </TabsContent>
 
           <TabsContent value="contact" className="flex-1 mt-4 overflow-auto">
