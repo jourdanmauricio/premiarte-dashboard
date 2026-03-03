@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { CustomTable } from "@/components/ui/custom/CustomTable";
 import { Variant } from "@/shared/types";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, UserPlus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { Modal } from "@/components/settingsPage/panels/variantsPanel/Modal";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
 import { useDeleteVariant, useGetVariants } from "@/hooks/use-variants";
@@ -18,8 +18,6 @@ const VariantsPanel = () => {
 
   const { data: variants, isLoading, error } = useGetVariants();
   const deleteVariantMutation = useDeleteVariant();
-
-  console.log("variants", variants);
 
   const onEdit = useCallback((variant: Variant) => {
     setCurrentVariant(variant);

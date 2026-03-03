@@ -25,8 +25,8 @@ export const getColumns = ({
     },
   },
   {
-    accessorKey: "options",
-    header: "OPCIONES",
+    accessorKey: "values",
+    header: "VALORES",
     size: 0,
     minSize: 300,
     maxSize: 1000,
