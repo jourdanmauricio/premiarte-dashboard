@@ -9,7 +9,6 @@ import { useState } from "react";
 import { ImagesTab } from "@/components/productsPage/modals/productModal/Tabs/ImagesTab";
 import { CategoryTab } from "@/components/productsPage/modals/productModal/Tabs/CategoryTab";
 import { RelatedProductTab } from "@/components/productsPage/modals/productModal/Tabs/RelatedProductTab";
-import { VariationsTab } from "@/components/productsPage/modals/productModal/Tabs/variationsTab/VariationsTab";
 
 interface ProductTabsProps {
   form: UseFormReturn<z.infer<typeof ProductFormSchema>>;
@@ -49,9 +48,6 @@ const ProductTabs = ({
       </TabsContent>
       <TabsContent value="related">
         <RelatedProductTab form={form} />
-      </TabsContent>
-      <TabsContent value="pricing">
-        <VariationsTab form={form} handlePriceChange={handlePriceChange} />
       </TabsContent>
     </Tabs>
   );

@@ -2,12 +2,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import type {
-  Category,
-  Product,
-  ProductCreate,
-  Variation,
-} from "@/shared/types";
+import type { Category, Product, ProductCreate } from "@/shared/types";
 import { ProductFormSchema } from "@/shared/schemas";
 import { useCreateProduct } from "@/hooks/use-products";
 import { useUpdateProduct } from "@/hooks/use-products";
@@ -75,8 +70,6 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
         : defaultValues,
   });
 
-  console.log("form!!!!!", form.getValues());
-
   const createProductMutation = useCreateProduct();
   const updateProductMutation = useUpdateProduct();
 
@@ -98,7 +91,7 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
       relatedProductIds: formData.relatedProducts,
       categoryIds: formData.categories.map((category) => category.id),
       images: formData.images as unknown as Image[],
-      variants: formData.variants as unknown as Variation[],
+      variants: [],
     };
 
     if (mode === "CREATE") {

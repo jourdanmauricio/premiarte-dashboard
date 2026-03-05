@@ -40,7 +40,7 @@ const PdfModal = ({ open, closeModal, budget }: PdfModalProps) => {
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="dialog-title">{`Presupuesto: ${budget.name}`}</DialogTitle>
+          <DialogTitle className="dialog-title">{`Presupuesto: ${budget.customer?.name}`}</DialogTitle>
           <DialogDescription />
 
           <PDFViewer className="h-full" showToolbar={false}>

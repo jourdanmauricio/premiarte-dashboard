@@ -15,7 +15,7 @@ import InputNumberField from "@/components/ui/custom/input-number-field";
 import BooleanCheckbox from "@/components/ui/custom/boolean-checkbox";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
 import { CustomDatePicker } from "@/components/ui/custom/custom-date-picker";
-import { ItemModal } from "@/components/budgets/budget-form/ItemModal";
+import { ItemModal } from "@/components/budgetsPage/budget-form/ItemModal";
 import { useBudgetForm } from "./useBudgetForm";
 import { CustomersCombobox } from "@/components/ui/custom/combobox/customer-combobox";
 import { CustomerModal } from "@/components/customers/CustomerModal";

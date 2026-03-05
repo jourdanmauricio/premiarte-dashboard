@@ -2,6 +2,7 @@ import type z from "zod";
 
 import BooleanCheckbox from "@/components/ui/custom/boolean-checkbox";
 import { InputField } from "@/components/ui/custom/input-field";
+import InputNumberField from "@/components/ui/custom/input-number-field";
 import { TextareaField } from "@/components/ui/custom/textarea-field";
 import { generateSlug } from "@/shared/functions";
 import { ProductFormSchema } from "@/shared/schemas";
@@ -41,6 +42,40 @@ const GeneralTab = ({ form, handlePriceChange }: GeneralTabProps) => {
         <BooleanCheckbox label="Activo" name="isActive" form={form} />
         <BooleanCheckbox label="Recomendado" name="isFeatured" form={form} />
       </div>
+
+      <InputField label="SKU" name="sku" placeholder="SKU" form={form} />
+
+      <InputNumberField
+        label="Stock"
+        name="stock"
+        placeholder="Stock"
+        form={form}
+        integerDigits={10}
+      />
+
+      <InputNumberField
+        label="Precio de venta"
+        name="retailPrice"
+        placeholder="Precio de venta"
+        form={form}
+        integerDigits={10}
+        decimalDigits={2}
+        onChangeInputNumberField={(e) =>
+          handlePriceChange("retailPrice")(e.target.value)
+        }
+      />
+
+      <InputNumberField
+        label="Precio mayorista"
+        name="wholesalePrice"
+        placeholder="Precio mayorista"
+        form={form}
+        integerDigits={10}
+        decimalDigits={2}
+        onChangeInputNumberField={(e) =>
+          handlePriceChange("wholesalePrice")(e.target.value)
+        }
+      />
     </div>
   );
 };

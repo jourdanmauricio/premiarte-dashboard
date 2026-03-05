@@ -5,14 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HomePanel } from "@/components/settingsPage/panels/homePanel/HomePanel";
 import { ResponsiblesPanel } from "@/components/settingsPage/panels/responsiblesPanel/ResponsiblesPanel";
 import { UsersPanel } from "@/components/settingsPage/panels/usersPanel/UsersPanel";
-import {
-  IconHome,
-  IconMessageCircle,
-  IconShield,
-  IconUser,
-  IconPaint,
-} from "@tabler/icons-react";
-import { VariationsPanel } from "@/components/settingsPage/panels/variationsPanel/VariationsPanel";
+import { IconHome, IconShield, IconUser } from "@tabler/icons-react";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -42,10 +35,7 @@ const SettingsPage = () => {
               Usuarios
               <IconUser className="w-4 h-4" />
             </TabsTrigger>
-            <TabsTrigger value="variations">
-              Variaciones
-              <IconPaint className="w-4 h-4" />
-            </TabsTrigger>
+
             {/* <TabsTrigger value="contact">
               Contacto
               <IconMessageCircle className="w-4 h-4" />
@@ -65,10 +55,6 @@ const SettingsPage = () => {
 
           <TabsContent value="users" className="flex-1 mt-4 overflow-auto">
             <UsersPanel />
-          </TabsContent>
-
-          <TabsContent value="variations" className="flex-1 mt-4 overflow-auto">
-            <VariationsPanel />
           </TabsContent>
 
           {/* <TabsContent value="contact" className="flex-1 mt-4 overflow-auto">

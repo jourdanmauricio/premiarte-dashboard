@@ -27,6 +27,12 @@ export const getBudgetColumns = ({
   onCreateOrder,
 }: DataTableColumnsProps): ColumnDef<Budget>[] => [
   {
+    id: "number",
+    header: "NÚMERO",
+    size: 100,
+    cell: ({ row }) => row.original.number ?? row.original.id,
+  },
+  {
     id: "customer",
     header: "CLIENTE",
     size: 250,

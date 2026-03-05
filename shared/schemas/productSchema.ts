@@ -23,14 +23,8 @@ export const ProductFormSchema = z.object({
     z.object({
       id: z.number().optional(),
       sku: z.string().min(1, { message: "El SKU es requerido" }),
-      retailPrice: z.string().optional(),
-      wholesalePrice: z.string().optional(),
-      values: z.array(
-        z.object({
-          id: z.number().optional(),
-          value: z.string().min(1, { message: "El valor es requerido" }),
-        }),
-      ),
+      retailPrice: z.number().optional(),
+      wholesalePrice: z.number().optional(),
     }),
   ),
 });

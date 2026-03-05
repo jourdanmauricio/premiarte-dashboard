@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { CustomTable } from "@/components/ui/custom/CustomTable";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
 import type { Row, SortingState } from "@tanstack/react-table";
-import { getBudgetColumns } from "@/components/budgets/table/budgetColumns";
+import { getBudgetColumns } from "@/components/budgetsPage/table/budgetColumns";
 import { CustomConfirmDialog } from "@/components/ui/custom/custom-confirm-dialog";
-import { FilterBudgets } from "@/components/budgets/table/FilterBugets";
+import { FilterBudgets } from "@/components/budgetsPage/table/FilterBugets";
 import { budgetStatusList } from "@/shared/constanst";
 import { Budget, BudgetStatus, Order } from "@/shared/types";
 import {
@@ -20,7 +20,7 @@ import {
   useUpdateBudgetStatus,
 } from "@/hooks/use-budgets";
 import { useRouter } from "next/navigation";
-import { PdfModal } from "@/components/budgets/pdf/PdfModal";
+import { PdfModal } from "@/components/budgetsPage/pdf/PdfModal";
 import { useCreateOrder } from "@/hooks/use-orders";
 import { getErrorMessage } from "@/lib/get-error-message";
 
@@ -45,8 +45,6 @@ const BudgetsPage = () => {
   );
   const createOrder = useCreateOrder();
   const updateBudgetStatus = useUpdateBudgetStatus();
-
-  console.log("data", data);
 
   const handleDeleteBudget = useCallback((budget: Budget) => {
     setCurrentBudget(budget);
@@ -149,13 +147,11 @@ const BudgetsPage = () => {
     try {
       // Preparar datos para Excel (solo campos simples, sin categorías, imágenes ni descuentos)
       const excelData = data.map((budget: Budget) => ({
-        Id: budget.id,
-        Nombre: budget.name,
-        Email: budget.email,
-        Telefono: budget.phone,
+        Id: budget.number,
+        Nombre: budget.customer?.name,
         Tipo: budget.type === "wholesale" ? "Mayorista" : "Minorista",
         Total: budget.totalAmount,
-        Status: translateBudgetStatus(budget.status),
+        Estado: translateBudgetStatus(budget.status),
         CreatedAt: budget.createdAt
           ? new Date(budget.createdAt).toLocaleDateString()
           : "",
