@@ -147,13 +147,11 @@ const BudgetsPage = () => {
     try {
       // Preparar datos para Excel (solo campos simples, sin categorías, imágenes ni descuentos)
       const excelData = data.map((budget: Budget) => ({
-        Id: budget.id,
-        Nombre: budget.name,
-        Email: budget.email,
-        Telefono: budget.phone,
+        Id: budget.number,
+        Nombre: budget.customer?.name,
         Tipo: budget.type === "wholesale" ? "Mayorista" : "Minorista",
         Total: budget.totalAmount,
-        Status: translateBudgetStatus(budget.status),
+        Estado: translateBudgetStatus(budget.status),
         CreatedAt: budget.createdAt
           ? new Date(budget.createdAt).toLocaleDateString()
           : "",
