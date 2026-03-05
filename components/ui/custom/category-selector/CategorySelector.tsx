@@ -1,4 +1,9 @@
-import { type UseFormReturn, useFormContext, FieldValues, Path } from "react-hook-form";
+import {
+  type UseFormReturn,
+  useFormContext,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 
 import { getColumns } from "./columns";
 import { useGetCategories } from "@/hooks/use-categories";
@@ -19,6 +24,7 @@ type CategorySelectorProps<T extends FieldValues> = {
 export default function CategorySelector<T extends FieldValues>({
   name,
   form,
+  className,
   labelClassName,
 }: CategorySelectorProps<T>) {
   const { getFieldState, formState } = useFormContext();
@@ -41,6 +47,7 @@ export default function CategorySelector<T extends FieldValues>({
             form={form}
             nameSchema={name}
             labelClassName={labelClassName}
+            className={className}
           />
           <div
             className={`relative transition-all duration-300 ease-in-out ${fieldState.invalid ? "opacity-100" : "opacity-0"}`}

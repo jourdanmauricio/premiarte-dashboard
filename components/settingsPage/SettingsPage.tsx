@@ -5,14 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HomePanel } from "@/components/settingsPage/panels/homePanel/HomePanel";
 import { ResponsiblesPanel } from "@/components/settingsPage/panels/responsiblesPanel/ResponsiblesPanel";
 import { UsersPanel } from "@/components/settingsPage/panels/usersPanel/UsersPanel";
-import {
-  IconHome,
-  IconMessageCircle,
-  IconShield,
-  IconUser,
-  IconPaint,
-} from "@tabler/icons-react";
-import { VariantsPanel } from "@/components/settingsPage/panels/variantsPanel/VariantsPanel";
+import { IconHome, IconShield, IconUser } from "@tabler/icons-react";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -42,14 +35,11 @@ const SettingsPage = () => {
               Usuarios
               <IconUser className="w-4 h-4" />
             </TabsTrigger>
-            <TabsTrigger value="variants">
-              Variaciones
-              <IconPaint className="w-4 h-4" />
-            </TabsTrigger>
-            <TabsTrigger value="contact">
+
+            {/* <TabsTrigger value="contact">
               Contacto
               <IconMessageCircle className="w-4 h-4" />
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="home" className="flex-1 mt-4 overflow-hidden">
@@ -67,13 +57,9 @@ const SettingsPage = () => {
             <UsersPanel />
           </TabsContent>
 
-          <TabsContent value="variants" className="flex-1 mt-4 overflow-auto">
-            <VariantsPanel />
-          </TabsContent>
-
-          <TabsContent value="contact" className="flex-1 mt-4 overflow-auto">
+          {/* <TabsContent value="contact" className="flex-1 mt-4 overflow-auto">
             <span>Contacto</span>
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </div>

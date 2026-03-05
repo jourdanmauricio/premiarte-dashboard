@@ -30,7 +30,7 @@ export const getBudgetColumns = ({
     id: "number",
     header: "NÚMERO",
     size: 100,
-    cell: ({ row }) => row.original.number ?? "",
+    cell: ({ row }) => row.original.number ?? row.original.id,
   },
   {
     id: "customer",

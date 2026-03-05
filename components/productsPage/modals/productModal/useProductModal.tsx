@@ -22,10 +22,13 @@ const defaultValues = {
   relatedProducts: [],
   images: [],
   categories: [],
+  variants: [],
 };
 
 const useProductModal = (product: Product | null, closeModal: () => void) => {
   const mode = product ? "EDIT" : "CREATE";
+
+  console.log("product", product);
 
   const form = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
@@ -62,6 +65,7 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
             priceUpdatedAt: product.priceUpdatedAt
               ? product.priceUpdatedAt
               : "",
+            variants: product.variants ?? [],
           }
         : defaultValues,
   });
@@ -87,6 +91,7 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
       relatedProductIds: formData.relatedProducts,
       categoryIds: formData.categories.map((category) => category.id),
       images: formData.images as unknown as Image[],
+      variants: [],
     };
 
     if (mode === "CREATE") {

@@ -5,7 +5,7 @@ import { PlusIcon, DownloadIcon, DollarSignIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
 import { CustomTable } from "@/components/ui/custom/CustomTable";
-import { ProductModal } from "@/components/productsPage/modals/ProductModal";
+import { ProductModal } from "@/components/productsPage/modals/productModal/ProductModal";
 import useProductsPage from "@/components/productsPage/useProductsPage";
 import { UpdatePriceModal } from "@/components/productsPage/modals/UpdatePriceModal";
 import { FilterProducts } from "@/components/productsPage/table/FilterProducts";
