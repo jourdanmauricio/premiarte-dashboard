@@ -23,6 +23,7 @@ export default function ProductSelector({
   name,
   form,
   labelClassName,
+  className,
 }: ProductSelectorProps) {
   const { getFieldState, formState } = useFormContext();
   const fieldState = getFieldState(name, formState);
@@ -44,6 +45,7 @@ export default function ProductSelector({
             form={form}
             nameSchema={name}
             labelClassName={labelClassName}
+            className={className}
           />
           <div
             className={`relative transition-all duration-300 ease-in-out ${fieldState.invalid ? "opacity-100" : "opacity-0"}`}

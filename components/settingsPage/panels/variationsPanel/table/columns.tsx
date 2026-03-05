@@ -2,17 +2,17 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { EditIcon, Trash2Icon } from "lucide-react";
 import { TruncatedCell } from "@/components/ui/custom/truncatedCell";
-import { Variant } from "@/shared/types";
+import { Variation } from "@/shared/types";
 
 type DataTableColumnsProps = {
-  onEdit: (variant: Variant) => void;
-  onDelete: (variant: Variant) => void;
+  onEdit: (variation: Variation) => void;
+  onDelete: (variation: Variation) => void;
 };
 
 export const getColumns = ({
   onEdit,
   onDelete,
-}: DataTableColumnsProps): ColumnDef<Variant>[] => [
+}: DataTableColumnsProps): ColumnDef<Variation>[] => [
   {
     accessorKey: "name",
     header: "NOMBRE",
@@ -31,10 +31,10 @@ export const getColumns = ({
     minSize: 300,
     maxSize: 1000,
     cell: ({ row }) => {
-      const variant = row.original;
+      const variation = row.original;
       return (
         <TruncatedCell
-          value={variant.values.map((value) => value.value).join(", ")}
+          value={variation.values.map((value) => value.value).join(", ")}
           linesMax={2}
         />
       );
@@ -47,13 +47,13 @@ export const getColumns = ({
     minSize: 150,
     maxSize: 150,
     cell: ({ row }) => {
-      const variant = row.original;
+      const variation = row.original;
       return (
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onEdit(variant)}
+            onClick={() => onEdit(variation)}
             className="h-8 w-8 p-0 hover:bg-blue-50"
           >
             <EditIcon className="h-4 w-4 text-blue-600" />
@@ -62,7 +62,7 @@ export const getColumns = ({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onDelete(variant)}
+            onClick={() => onDelete(variation)}
             className="h-8 w-8 p-0 hover:bg-red-50"
           >
             <Trash2Icon className="h-4 w-4 text-red-600" />

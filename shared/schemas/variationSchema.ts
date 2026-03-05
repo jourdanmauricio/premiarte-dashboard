@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const variantFormSchema = z.object({
+export const variationFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, "Requerido"),
   values: z.array(
@@ -12,4 +12,4 @@ export const variantFormSchema = z.object({
   ),
 });
 
-export type VariantFormSchema = z.infer<typeof variantFormSchema>;
+export type VariationFormSchema = z.infer<typeof variationFormSchema>;

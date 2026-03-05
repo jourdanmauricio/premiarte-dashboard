@@ -25,6 +25,8 @@ const useProductsPage = () => {
   const { data: productsData, isLoading, error } = useGetProducts();
   const deleteProductMutation = useDeleteProduct();
 
+  console.log("productsData", productsData);
+
   // Los datos ya vienen completos del backend, solo necesitamos mapearlos al tipo esperado
   const data = useMemo(() => {
     if (!productsData) return [];

@@ -27,6 +27,7 @@ import {
   Path,
 } from "react-hook-form";
 import type { Category } from "@/shared/types";
+import { cn } from "@/lib/utils";
 
 interface CategorySelectorTableProps<TData extends FieldValues, TValue> {
   data: Category[];
@@ -35,6 +36,7 @@ interface CategorySelectorTableProps<TData extends FieldValues, TValue> {
   form: UseFormReturn<TData>;
   nameSchema: Path<TData>;
   labelClassName?: string;
+  className?: string;
 }
 
 export function CategorySelectorTable<TData extends FieldValues, TValue>({
@@ -43,6 +45,7 @@ export function CategorySelectorTable<TData extends FieldValues, TValue>({
   isLoading,
   form,
   nameSchema,
+  className,
 }: CategorySelectorTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>(
     {},
@@ -155,13 +158,15 @@ export function CategorySelectorTable<TData extends FieldValues, TValue>({
     count: rows.length,
     estimateSize: () => 25,
     getScrollElement: () => tableContainerRef.current,
-    measureElement: () => 25,
-    overscan: 10,
+    overscan: 3,
   });
 
   return (
     <div
-      className={`relative mt-4 h-40 rounded-md border ${!fieldState.invalid ? "border-neutral-50" : "border-destructive"}`}
+      className={cn(
+        `relative mt-4 h-full rounded-md border ${!fieldState.invalid ? "border-neutral-50" : "border-destructive"}`,
+        className,
+      )}
     >
       {/* Header fijo */}
       <div className="sticky top-0 z-10 rounded-t-md">
@@ -188,7 +193,8 @@ export function CategorySelectorTable<TData extends FieldValues, TValue>({
 
       {/* Body con scroll */}
       <div
-        className="overflow-auto h-[calc(100%-32px)]"
+        className="overflow-auto"
+        style={{ height: 400, willChange: "transform" }}
         ref={tableContainerRef}
       >
         <Table>
@@ -206,7 +212,7 @@ export function CategorySelectorTable<TData extends FieldValues, TValue>({
             <TableBody
               className="relative"
               style={{
-                height: `${Math.min(rowVirtualizer.getTotalSize(), 120)}px`,
+                height: `${rowVirtualizer.getTotalSize()}px`,
               }}
             >
               {rowVirtualizer.getVirtualItems().length > 0 ? (
@@ -216,8 +222,6 @@ export function CategorySelectorTable<TData extends FieldValues, TValue>({
                     <TableRow
                       key={row.id}
                       className="absolute flex h-[25px]! w-full border-y-0 bg-transparent"
-                      data-index={virtualRow.index}
-                      ref={(node) => rowVirtualizer.measureElement(node)}
                       style={{ transform: `translateY(${virtualRow.start}px)` }}
                     >
                       {row.getVisibleCells().map((cell) => (

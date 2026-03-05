@@ -1,41 +1,41 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Variant } from "@/shared/types";
+import { Variation } from "@/shared/types";
 import { toast } from "sonner";
 import api from "@/lib/axios";
 
-export function useGetVariants() {
-  return useQuery<Variant[]>({
-    queryKey: ["variants"],
+export function useGetVariations() {
+  return useQuery<Variation[]>({
+    queryKey: ["variation-types"],
     queryFn: () => api.get("/variation-types").then((res) => res.data),
   });
 }
 
-export function useCreateVariant() {
+export function useCreateVariation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Variant) => api.post("/variation-types", data),
+    mutationFn: (data: Variation) => api.post("/variation-types", data),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["variants"] });
+      await queryClient.invalidateQueries({ queryKey: ["variation-types"] });
       toast.success("Variante creada correctamente");
     },
   });
 }
 
-export function useUpdateVariant() {
+export function useUpdateVariation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Variant }) =>
+    mutationFn: ({ id, data }: { id: string; data: Variation }) =>
       api.put(`/variation-types/${id}`, data),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["variants"] });
+      await queryClient.invalidateQueries({ queryKey: ["variation-types"] });
       toast.success("Variante modificada correctamente");
     },
   });
 }
 
-export function useDeleteVariant() {
+export function useDeleteVariation() {
   const queryClient = useQueryClient();
 
   return useMutation({

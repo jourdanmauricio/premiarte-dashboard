@@ -10,14 +10,14 @@ import {
   DialogDescription,
   DialogContent,
 } from "@/components/ui/dialog";
-import { Variant } from "@/shared/types";
+import { Variation } from "@/shared/types";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { userFormSchema } from "@/shared/schemas";
 import { InputField } from "@/components/ui/custom/input-field";
 import { SubmitButton } from "@/components/ui/custom/submit-button";
-import { useCreateVariant, useUpdateVariant } from "@/hooks/use-variants";
-import { variantFormSchema } from "@/shared/schemas";
+import { useCreateVariation, useUpdateVariation } from "@/hooks/use-variations";
+import { variationFormSchema } from "@/shared/schemas";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
@@ -25,7 +25,7 @@ import { toast } from "sonner";
 interface ModalProps {
   open: boolean;
   closeModal: () => void;
-  variant: Variant | null;
+  variation: Variation | null;
 }
 
 const defaultValues = {
@@ -33,23 +33,23 @@ const defaultValues = {
   values: [],
 };
 
-const Modal = ({ open, closeModal, variant }: ModalProps) => {
-  const mode = variant ? "EDIT" : "CREATE";
+const Modal = ({ open, closeModal, variation }: ModalProps) => {
+  const mode = variation ? "EDIT" : "CREATE";
 
-  const createVariantMutation = useCreateVariant();
-  const updateVariantMutation = useUpdateVariant();
+  const createVariationMutation = useCreateVariation();
+  const updateVariationMutation = useUpdateVariation();
 
-  const form = useForm<z.infer<typeof variantFormSchema>>({
-    resolver: zodResolver(variantFormSchema),
+  const form = useForm<z.infer<typeof variationFormSchema>>({
+    resolver: zodResolver(variationFormSchema),
     defaultValues,
   });
 
   useEffect(() => {
-    if (variant) {
+    if (variation) {
       form.reset({
-        name: variant?.name || "",
+        name: variation?.name || "",
         values:
-          variant?.values.map((value) => ({
+          variation?.values.map((value) => ({
             id: value.id?.toString() || "",
             value: value.value,
           })) || [],
@@ -57,9 +57,9 @@ const Modal = ({ open, closeModal, variant }: ModalProps) => {
     } else {
       form.reset(defaultValues);
     }
-  }, [variant, form]);
+  }, [variation, form]);
 
-  const onSubmit = async (values: z.infer<typeof variantFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof variationFormSchema>) => {
     const data = {
       name: values.name,
       values: values.values.map((value) => ({
@@ -77,12 +77,12 @@ const Modal = ({ open, closeModal, variant }: ModalProps) => {
     }
 
     if (mode === "CREATE") {
-      await createVariantMutation.mutateAsync(data as unknown as Variant);
+      await createVariationMutation.mutateAsync(data as unknown as Variation);
       closeModal();
     } else {
-      await updateVariantMutation.mutateAsync({
-        id: variant?.id?.toString() || "",
-        data: data as unknown as Variant,
+      await updateVariationMutation.mutateAsync({
+        id: variation?.id?.toString() || "",
+        data: data as unknown as Variation,
       });
       closeModal();
     }

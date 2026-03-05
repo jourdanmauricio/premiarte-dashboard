@@ -1,5 +1,6 @@
 import type { Category } from "@/shared/types/category";
 import type { Image } from "@/shared/types/image";
+import type { Variation } from "@/shared/types";
 
 // Tipo para los productos
 export interface Product {
@@ -20,6 +21,7 @@ export interface Product {
   categories: Category[] | null;
   relatedProductIds?: number[] | null;
   categoryIds: number[] | null;
+  variants: Variation[] | null;
 }
 
 export interface ProductWithDetails extends Product {

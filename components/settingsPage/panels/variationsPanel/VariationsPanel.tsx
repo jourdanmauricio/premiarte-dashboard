@@ -3,34 +3,38 @@
 import { useCallback, useMemo, useState } from "react";
 
 import { CustomTable } from "@/components/ui/custom/CustomTable";
-import { Variant } from "@/shared/types";
+import { Variation } from "@/shared/types";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { Modal } from "@/components/settingsPage/panels/variantsPanel/Modal";
+import { Modal } from "@/components/settingsPage/panels/variationsPanel/Modal";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
-import { useDeleteVariant, useGetVariants } from "@/hooks/use-variants";
-import { getColumns } from "@/components/settingsPage/panels/variantsPanel/table/columns";
+import { useDeleteVariation, useGetVariations } from "@/hooks/use-variations";
+import { getColumns } from "@/components/settingsPage/panels/variationsPanel/table/columns";
 
-const VariantsPanel = () => {
+const VariationsPanel = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentVariant, setCurrentVariant] = useState<Variant | null>(null);
+  const [currentVariation, setCurrentVariation] = useState<Variation | null>(
+    null,
+  );
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
-  const { data: variants, isLoading, error } = useGetVariants();
-  const deleteVariantMutation = useDeleteVariant();
+  const { data: variations, isLoading, error } = useGetVariations();
+  const deleteVariationMutation = useDeleteVariation();
 
-  const onEdit = useCallback((variant: Variant) => {
-    setCurrentVariant(variant);
+  console.log("variations", variations);
+
+  const onEdit = useCallback((variation: Variation) => {
+    setCurrentVariation(variation);
     setModalIsOpen(true);
   }, []);
 
-  const onDelete = useCallback((variant: Variant) => {
-    setCurrentVariant(variant);
+  const onDelete = useCallback((variation: Variation) => {
+    setCurrentVariation(variation);
     setDeleteModalIsOpen(true);
   }, []);
 
   const handleCreateVariant = () => {
-    setCurrentVariant(null);
+    setCurrentVariation(null);
     setModalIsOpen(true);
   };
 
@@ -44,15 +48,17 @@ const VariantsPanel = () => {
   );
 
   const handleDialogConfirmation = async () => {
-    if (currentVariant) {
-      await deleteVariantMutation.mutateAsync(currentVariant.id!.toString());
+    if (currentVariation) {
+      await deleteVariationMutation.mutateAsync(
+        currentVariation.id!.toString(),
+      );
       setDeleteModalIsOpen(false);
-      setCurrentVariant(null);
+      setCurrentVariation(null);
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-20">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Gestión de Variantes</h2>
         <Button
@@ -63,9 +69,9 @@ const VariantsPanel = () => {
         </Button>
       </div>
       <CustomTable
-        data={variants || []}
+        data={variations || []}
         columns={columns}
-        isLoading={isLoading || deleteVariantMutation.isPending}
+        isLoading={isLoading || deleteVariationMutation.isPending}
         globalFilter={{ search: "" }}
         error={!!error}
         sorting={[]}
@@ -79,17 +85,17 @@ const VariantsPanel = () => {
         <Modal
           open={modalIsOpen}
           closeModal={() => {
-            setCurrentVariant(null);
+            setCurrentVariation(null);
             setModalIsOpen(false);
           }}
-          variant={currentVariant}
+          variation={currentVariation}
         />
       )}
 
       <CustomAlertDialog
         open={deleteModalIsOpen}
         onCloseDialog={() => {
-          setCurrentVariant(null);
+          setCurrentVariation(null);
           setDeleteModalIsOpen(false);
         }}
         onContinueClick={handleDialogConfirmation}
@@ -102,4 +108,4 @@ const VariantsPanel = () => {
   );
 };
 
-export { VariantsPanel };
+export { VariationsPanel };

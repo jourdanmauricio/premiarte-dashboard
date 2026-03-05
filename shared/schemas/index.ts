@@ -11,4 +11,4 @@ export * from "./contactSchema";
 export * from "./forgotPasswordSchema";
 export * from "./resetPasswordSchema";
 export * from "./settingsSchema";
-export * from "./variantSchema";
+export * from "./variationSchema";

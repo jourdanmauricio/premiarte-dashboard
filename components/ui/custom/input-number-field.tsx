@@ -114,7 +114,7 @@ export default function InputNumberField<
       name={name}
       render={({ field }) => (
         <FormItem className={cn("relative", className)}>
-          <FormLabel className={`font-normal ${labelClassName}`}>
+          <FormLabel className={`text-sm font-normal ${labelClassName}`}>
             {label}
           </FormLabel>
           {enableClean && field.value && (
