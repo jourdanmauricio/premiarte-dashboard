@@ -5,8 +5,14 @@ import {
   View,
   StyleSheet,
   Image,
+  Link,
 } from "@react-pdf/renderer";
 import type { Budget, Customer, Responsible } from "@/shared/types";
+
+const PDF_URL = process.env.NEXT_PUBLIC_APP_URL;
+if (!PDF_URL) {
+  throw new Error("NEXT_PUBLIC_APP_URL is not set");
+}
 
 interface PDFProps {
   budget: Budget;
@@ -510,9 +516,14 @@ export const PDF = ({ budget, responsible, customerData }: PDFProps) => {
             {/* Filas de productos */}
             {budget.items.map((item, index) => (
               <View key={index} style={styles.tableRow}>
-                <Text style={[styles.tableCell, styles.cellProduct]}>
+                <Link href={`${PDF_URL}/productos/${item.product.slug}`}>
+                  <Text style={[styles.tableCell, styles.cellProduct]}>
+                    {item.product.name}
+                  </Text>
+                </Link>
+                {/* <Text style={[styles.tableCell, styles.cellProduct]}>
                   {item.product.name}
-                </Text>
+                </Text> */}
 
                 <Text style={[styles.tableCell, styles.cellQuantity]}>
                   {item.quantity}
