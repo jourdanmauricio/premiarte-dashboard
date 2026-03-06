@@ -516,14 +516,12 @@ export const PDF = ({ budget, responsible, customerData }: PDFProps) => {
             {/* Filas de productos */}
             {budget.items.map((item, index) => (
               <View key={index} style={styles.tableRow}>
-                <Link href={`${PDF_URL}/productos/${item.product.slug}`}>
-                  <Text style={[styles.tableCell, styles.cellProduct]}>
-                    {item.product.name}
-                  </Text>
-                </Link>
-                {/* <Text style={[styles.tableCell, styles.cellProduct]}>
-                  {item.product.name}
-                </Text> */}
+                <View style={[styles.tableCell, styles.cellProduct]}>
+                  <Link href={`${PDF_URL}/productos/${item.product.slug}`}>
+                    <Text>{item.product.name}</Text>
+                  </Link>
+                  <Text>{item.product.description}</Text>
+                </View>
 
                 <Text style={[styles.tableCell, styles.cellQuantity]}>
                   {item.quantity}
