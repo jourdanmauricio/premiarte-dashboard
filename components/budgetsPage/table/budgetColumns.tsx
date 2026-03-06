@@ -1,4 +1,10 @@
-import { EditIcon, FileText, PackagePlus, Trash2Icon } from "lucide-react";
+import {
+  EditIcon,
+  EyeIcon,
+  FileText,
+  PackagePlus,
+  Trash2Icon,
+} from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import type { Budget } from "@/shared/types";
@@ -17,6 +23,7 @@ type DataTableColumnsProps = {
   onDelete: (budget: Budget) => void;
   onEdit: (budget: Budget) => void;
   onView: (budget: Budget) => void;
+  onCreatePDF: (budget: Budget) => void;
   onCreateOrder: (budget: Budget) => void;
 };
 
@@ -24,6 +31,7 @@ export const getBudgetColumns = ({
   onDelete,
   onEdit,
   onView,
+  onCreatePDF,
   onCreateOrder,
 }: DataTableColumnsProps): ColumnDef<Budget>[] => [
   {
@@ -104,7 +112,7 @@ export const getBudgetColumns = ({
   {
     id: "actions",
     header: "ACCIONES",
-    size: 180,
+    size: 210,
     cell: ({ row }) => {
       const budget = row.original;
       return (
@@ -141,7 +149,7 @@ export const getBudgetColumns = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onView(budget)}
+                  onClick={() => onCreatePDF(budget)}
                   className="h-8 w-8 p-0 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   type="button"
                   disabled={
@@ -159,8 +167,18 @@ export const getBudgetColumns = ({
             </TooltipContent>
           </Tooltip>
 
-          {/* Editar presupuesto */}
+          {/* Ver presupuesto */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onView(budget)}
+            className="h-8 w-8 p-0 hover:bg-blue-50"
+            type="button"
+          >
+            <EyeIcon className="h-4 w-4 text-orange-600" />
+          </Button>
 
+          {/* Editar presupuesto */}
           <Button
             variant="ghost"
             size="sm"

@@ -23,11 +23,13 @@ import { useRouter } from "next/navigation";
 import { PdfModal } from "@/components/budgetsPage/pdf/PdfModal";
 import { useCreateOrder } from "@/hooks/use-orders";
 import { getErrorMessage } from "@/lib/get-error-message";
+import { ViewBudgetModal } from "./ViewBudgetModal";
 
 const BudgetsPage = () => {
   const router = useRouter();
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [currentBudget, setCurrentBudget] = useState<Budget | null>(null);
+  const [createPDFModalIsOpen, setCreatePDFModalIsOpen] = useState(false);
   const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageIndex, setPageIndex] = useState(0);
@@ -65,10 +67,18 @@ const BudgetsPage = () => {
     }
   };
 
-  const handleViewBudget = useCallback((budget: Budget) => {
+  const handleCreatePDFBudget = useCallback((budget: Budget) => {
     setCurrentBudget(budget);
-    setViewModalIsOpen(true);
+    setCreatePDFModalIsOpen(true);
   }, []);
+
+  const handleViewBudget = useCallback(
+    (budget: Budget) => {
+      setCurrentBudget(budget);
+      setViewModalIsOpen(true);
+    },
+    [currentBudget],
+  );
 
   const handleConfirmAddOrder = useCallback(
     (budget: Budget) => {
@@ -123,13 +133,15 @@ const BudgetsPage = () => {
         onDelete: handleDeleteBudget,
         onEdit: handleEditBudget,
         onView: handleViewBudget,
+        onCreatePDF: handleCreatePDFBudget,
         onCreateOrder: handleConfirmAddOrder,
       }),
     [
       handleDeleteBudget,
       handleEditBudget,
-      handleViewBudget,
+      handleCreatePDFBudget,
       handleConfirmAddOrder,
+      handleViewBudget,
     ],
   );
 
@@ -312,12 +324,12 @@ const BudgetsPage = () => {
         />
       )}
 
-      {viewModalIsOpen && currentBudget !== null && (
+      {createPDFModalIsOpen && currentBudget !== null && (
         <PdfModal
-          open={viewModalIsOpen}
+          open={createPDFModalIsOpen}
           budget={currentBudget}
           closeModal={() => {
-            setViewModalIsOpen(false);
+            setCreatePDFModalIsOpen(false);
             setCurrentBudget(null);
           }}
         />
@@ -340,11 +352,18 @@ const BudgetsPage = () => {
             </span>
           }
           cancelButtonText="Cancelar"
-          // continueButtonText="Crear pedido"
           continueButtonText={
             createOrder.isPending ? "Creando..." : "Crear pedido"
           }
           isLoading={createOrder.isPending}
+        />
+      )}
+
+      {viewModalIsOpen && currentBudget !== null && (
+        <ViewBudgetModal
+          open={viewModalIsOpen}
+          budget={currentBudget}
+          closeModal={() => setViewModalIsOpen(false)}
         />
       )}
     </>
