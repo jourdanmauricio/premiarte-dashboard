@@ -29,7 +29,7 @@ const PdfModal = ({ open, closeModal, budget }: PdfModalProps) => {
   if (!budget || !responsible || !customerData) return null;
 
   // Generar nombre del archivo personalizado
-  const fileName = `Presupuesto_${budget.name}_${new Date(budget.createdAt).toLocaleDateString("es-ES").replace(/\//g, "-")}.pdf`;
+  const fileName = `Presupuesto_${budget.customer?.name}_${new Date(budget.createdAt).toLocaleDateString("es-ES").replace(/\//g, "-")}.pdf`;
 
   return (
     <Dialog open={open} onOpenChange={closeModal}>
