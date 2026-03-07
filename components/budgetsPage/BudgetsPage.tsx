@@ -48,6 +48,8 @@ const BudgetsPage = () => {
   const createOrder = useCreateOrder();
   const updateBudgetStatus = useUpdateBudgetStatus();
 
+  console.log("data", data);
+
   const handleDeleteBudget = useCallback((budget: Budget) => {
     setCurrentBudget(budget);
     setDeleteModalIsOpen(true);
@@ -312,7 +314,7 @@ const BudgetsPage = () => {
       {deleteModalIsOpen && currentBudget !== null && (
         <CustomAlertDialog
           title="Eliminar presupuesto"
-          description={`¿Estás seguro de querer eliminar el presupuesto "${currentBudget.name}"? Esta acción no se puede deshacer.`}
+          description={`¿Estás seguro de querer eliminar el presupuesto "${currentBudget.customer?.name}"? Esta acción no se puede deshacer.`}
           cancelButtonText="Cancelar"
           continueButtonText="Eliminar"
           onContinueClick={handleConfirmDelete}
@@ -345,7 +347,7 @@ const BudgetsPage = () => {
           description={
             <span className="">
               ¿Estás seguro de querer crear un pedido para el presupuesto{" "}
-              {currentBudget.name}?
+              {currentBudget.customer?.name}?
               <br />
               <br />
               {checkStatus(currentBudget.status)}

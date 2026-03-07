@@ -2,10 +2,13 @@ import type { Category } from "@/shared/types/category";
 import type { Image } from "@/shared/types/image";
 
 export interface Variant {
-  id?: number;
+  id?: string;
   sku: string;
   retailPrice?: number | undefined;
   wholesalePrice?: number | undefined;
+  stock?: number | undefined;
+  attributes: string[];
+  values: string[];
 }
 
 // Tipo para los productos

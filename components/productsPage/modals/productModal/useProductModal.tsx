@@ -2,6 +2,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { toast } from "sonner";
+
 import type { Category, Product, ProductCreate } from "@/shared/types";
 import { ProductFormSchema } from "@/shared/schemas";
 import { useCreateProduct } from "@/hooks/use-products";
@@ -27,8 +29,6 @@ const defaultValues = {
 
 const useProductModal = (product: Product | null, closeModal: () => void) => {
   const mode = product ? "EDIT" : "CREATE";
-
-  console.log("product", product);
 
   const form = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
@@ -65,7 +65,15 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
             priceUpdatedAt: product.priceUpdatedAt
               ? product.priceUpdatedAt
               : "",
-            variants: product.variants ?? [],
+            variants: (product.variants ?? []).map((v) => ({
+              id: v.id,
+              sku: v.sku ?? "",
+              retailPrice: typeof v.retailPrice === "number" ? v.retailPrice : undefined,
+              wholesalePrice: typeof v.wholesalePrice === "number" ? v.wholesalePrice : undefined,
+              stock: typeof v.stock === "number" ? v.stock : undefined,
+              attributes: Array.isArray(v.attributes) ? v.attributes : [],
+              values: Array.isArray(v.values) ? v.values : [],
+            })),
           }
         : defaultValues,
   });
@@ -74,6 +82,8 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
   const updateProductMutation = useUpdateProduct();
 
   const onSubmit = async (formData: z.infer<typeof ProductFormSchema>) => {
+    const hasVariants = formData.variants.length > 0;
+
     const newProduct: ProductCreate = {
       name: formData.name,
       slug: formData.slug,
@@ -81,17 +91,17 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
       isActive: formData.isActive,
       isFeatured: formData.isFeatured,
       sku: formData.sku,
-      stock: formData.stock ? parseInt(formData.stock) : undefined,
-      retailPrice: formData.retailPrice
+      stock: hasVariants ? undefined : formData.stock ? parseInt(formData.stock) : undefined,
+      retailPrice: hasVariants ? undefined : formData.retailPrice
         ? parseFloat(formData.retailPrice)
         : undefined,
-      wholesalePrice: formData.wholesalePrice
+      wholesalePrice: hasVariants ? undefined : formData.wholesalePrice
         ? parseFloat(formData.wholesalePrice)
         : undefined,
       relatedProductIds: formData.relatedProducts,
       categoryIds: formData.categories.map((category) => category.id),
       images: formData.images as unknown as Image[],
-      variants: [],
+      variants: formData.variants,
     };
 
     if (mode === "CREATE") {
@@ -106,7 +116,16 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
     }
   };
 
-  const onError = () => console.log("errors", form.formState.errors);
+  const onError = () => {
+    const errors = form.formState.errors;
+    const variantsMsg = errors.variants?.message;
+    const firstMsg =
+      typeof variantsMsg === "string"
+        ? variantsMsg
+        : errors.root?.message ??
+          Object.values(errors).find((e) => e?.message)?.message;
+    toast.error(firstMsg ?? "Revisá los datos del formulario.");
+  };
 
   // Función helper para detectar cambios de precio
   const handlePriceChange = (fieldName: "retailPrice" | "wholesalePrice") => {

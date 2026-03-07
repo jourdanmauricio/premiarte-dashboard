@@ -16,6 +16,9 @@ interface GeneralTabProps {
 }
 
 const GeneralTab = ({ form, handlePriceChange }: GeneralTabProps) => {
+  const variants = form.watch("variants");
+  const hasVariants = Array.isArray(variants) && variants.length > 0;
+
   return (
     <div className="mt-4 grid grid-cols-2 gap-12">
       <InputField
@@ -45,37 +48,45 @@ const GeneralTab = ({ form, handlePriceChange }: GeneralTabProps) => {
 
       <InputField label="SKU" name="sku" placeholder="SKU" form={form} />
 
-      <InputNumberField
-        label="Stock"
-        name="stock"
-        placeholder="Stock"
-        form={form}
-        integerDigits={10}
-      />
+      {hasVariants ? (
+        <p className="col-span-2 text-muted-foreground text-sm">
+          Este producto tiene variaciones. El precio y el stock se gestionan desde la pestaña Variantes.
+        </p>
+      ) : (
+        <>
+          <InputNumberField
+            label="Stock"
+            name="stock"
+            placeholder="Stock"
+            form={form}
+            integerDigits={10}
+          />
 
-      <InputNumberField
-        label="Precio de venta"
-        name="retailPrice"
-        placeholder="Precio de venta"
-        form={form}
-        integerDigits={10}
-        decimalDigits={2}
-        onChangeInputNumberField={(e) =>
-          handlePriceChange("retailPrice")(e.target.value)
-        }
-      />
+          <InputNumberField
+            label="Precio de venta"
+            name="retailPrice"
+            placeholder="Precio de venta"
+            form={form}
+            integerDigits={10}
+            decimalDigits={2}
+            onChangeInputNumberField={(e) =>
+              handlePriceChange("retailPrice")(e.target.value)
+            }
+          />
 
-      <InputNumberField
-        label="Precio mayorista"
-        name="wholesalePrice"
-        placeholder="Precio mayorista"
-        form={form}
-        integerDigits={10}
-        decimalDigits={2}
-        onChangeInputNumberField={(e) =>
-          handlePriceChange("wholesalePrice")(e.target.value)
-        }
-      />
+          <InputNumberField
+            label="Precio mayorista"
+            name="wholesalePrice"
+            placeholder="Precio mayorista"
+            form={form}
+            integerDigits={10}
+            decimalDigits={2}
+            onChangeInputNumberField={(e) =>
+              handlePriceChange("wholesalePrice")(e.target.value)
+            }
+          />
+        </>
+      )}
     </div>
   );
 };
