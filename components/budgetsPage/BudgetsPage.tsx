@@ -48,8 +48,6 @@ const BudgetsPage = () => {
   const createOrder = useCreateOrder();
   const updateBudgetStatus = useUpdateBudgetStatus();
 
-  console.log("data", data);
-
   const handleDeleteBudget = useCallback((budget: Budget) => {
     setCurrentBudget(budget);
     setDeleteModalIsOpen(true);
@@ -162,26 +160,51 @@ const BudgetsPage = () => {
     }
 
     try {
-      // Preparar datos para Excel (solo campos simples, sin categorías, imágenes ni descuentos)
-      const excelData = data.map((budget: Budget) => ({
-        Id: budget.number,
-        Nombre: budget.customer?.name,
-        Tipo: budget.type === "wholesale" ? "Mayorista" : "Minorista",
-        Total: budget.totalAmount,
-        Estado: translateBudgetStatus(budget.status),
-        CreatedAt: budget.createdAt
-          ? new Date(budget.createdAt).toLocaleDateString()
-          : "",
-        Observacion: budget.observation,
-      }));
+      // Una fila por ítem; se repiten los datos del presupuesto en cada fila
+      const excelData: Record<string, string | number | undefined | null>[] =
+        [];
+      for (const budget of data) {
+        const budgetFields = {
+          Id: budget.number,
+          Nombre: budget.customer?.name,
+          Tipo: budget.type === "wholesale" ? "Mayorista" : "Minorista",
+          TotalPresupuesto: budget.totalAmount,
+          Estado: translateBudgetStatus(budget.status),
+          CreatedAt: budget.createdAt
+            ? new Date(budget.createdAt).toLocaleDateString()
+            : "",
+          Observacion: budget.observation ?? "",
+        };
+        const items = budget.items ?? [];
+        for (const item of items) {
+          excelData.push({
+            ...budgetFields,
+            Producto: item.name ?? item.product?.name ?? "",
+            SKU: item.sku ?? "",
+            Cantidad: item.quantity,
+            PrecioUnit: item.price,
+            Subtotal: item.amount,
+            ObservacionItem: item.observation ?? "",
+            Variacion:
+              item.values && item.values.length > 0
+                ? item.values.join(" - ")
+                : "",
+          });
+        }
+      }
 
-      // Solo usar los datos existentes (sin filas vacías adicionales)
+      if (excelData.length === 0) {
+        toast.error("No hay ítems en los presupuestos para descargar");
+        return;
+      }
 
       // Crear workbook
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(excelData);
 
-      // Función para ajustar automáticamente el ancho de las columnas
+      const headers = Object.keys(excelData[0]) as string[];
+      const DESC_MAX_WIDTH = 150;
+
       const autoFitColumns = (
         worksheet: XLSX.WorkSheet,
         worksheetData: (string | number | null | undefined)[][],
@@ -193,22 +216,21 @@ const BudgetsPage = () => {
               return cell ? cell.toString().length + 2 : 10;
             }),
           );
-
-          // Limitar el ancho máximo de la columna descripción (triple del tamaño anterior)
-          if (colIndex === 8) {
-            // Columna "Descripción"
-            return { wch: Math.min(maxWidth, 150) };
+          const header = headers[colIndex];
+          if (
+            header === "Observacion" ||
+            header === "ObservacionItem"
+          ) {
+            return { wch: Math.min(maxWidth, DESC_MAX_WIDTH) };
           }
-
           return { wch: maxWidth };
         });
         worksheet["!cols"] = colWidths;
       };
 
-      // Convertir datos a array 2D para autoFitColumns
       const worksheetData = [
-        Object.keys(excelData[0]), // Encabezados
-        ...excelData.map((row) => Object.values(row)), // Datos
+        headers,
+        ...excelData.map((row) => Object.values(row)),
       ];
 
       autoFitColumns(ws, worksheetData);
