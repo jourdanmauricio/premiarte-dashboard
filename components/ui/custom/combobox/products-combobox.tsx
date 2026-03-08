@@ -73,6 +73,7 @@ export default function ProductsCombobox<T extends FieldValues = FieldValues>({
                 retailPrice: product.retailPrice?.toString() || "",
                 wholesalePrice: product.wholesalePrice?.toString() || "",
                 images: product.images || [],
+                variants: product.variants || [],
                 // imageUrl: product.images?.[0]?.url || "",
                 // imageAlt: product.images?.[0]?.alt || "",
               })) || []

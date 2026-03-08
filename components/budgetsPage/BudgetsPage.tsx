@@ -108,12 +108,15 @@ const BudgetsPage = () => {
         products:
           budgetDb.items?.map((item) => ({
             productId: item.productId,
+            variantId: item.variantId ?? null,
             price: item.price,
             quantity: item.quantity,
             amount: item.amount,
             retailPrice: item.retailPrice,
             wholesalePrice: item.wholesalePrice,
             observation: item.observation,
+            attributes: item.attributes ?? null,
+            values: item.values ?? null,
           })) || [],
       };
 

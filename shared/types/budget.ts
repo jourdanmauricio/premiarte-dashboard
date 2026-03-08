@@ -6,18 +6,23 @@ import type z from "zod";
 export interface BudgetItem {
   id: number;
   productId: number;
+  variantId: string | null;
   product: Product;
-  sku: string;
-  slug: string;
-  name: string;
-  imageUrl: string;
-  imageAlt: string;
+  sku?: string;
+  slug?: string;
+  name?: string;
+  imageUrl?: string;
+  imageAlt?: string;
   retailPrice: number; // precio unitario en centavos
   wholesalePrice: number; // precio unitario en centavos
   price: number; // precio unitario en centavos
   quantity: number;
   amount: number; // precio total del item (price * quantity)
-  observation?: string;
+  observation?: string | null;
+  /** Nombres de los atributos de la variante (ej: ["Medida", "Color"]) */
+  attributes?: string[] | null;
+  /** Valores de la variante (ej: ["20 cm", "Plata"]) */
+  values?: string[] | null;
 }
 
 export interface Budget {

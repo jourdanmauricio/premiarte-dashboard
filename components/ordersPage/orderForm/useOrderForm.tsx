@@ -67,6 +67,7 @@ export const useOrderForm = () => {
             name: item.product.name,
             sku: item.product.sku || "",
             productId: item.productId,
+            variantId: item.variantId ?? null,
             slug: item.product.slug,
             imageUrl: item.product.images?.[0]?.url ?? "",
             imageAlt: item.product.images?.[0].alt ?? "",
@@ -78,6 +79,9 @@ export const useOrderForm = () => {
               ? item.wholesalePrice.toString()
               : "0",
             observation: item.observation ?? "",
+            attributes: item.attributes ?? null,
+            values: item.values ?? null,
+            productVariants: item.product.variants ?? null,
           })),
           observation: order.observation ?? "",
           totalAmount: order.totalAmount ? order.totalAmount.toString() : "0",
@@ -184,6 +188,7 @@ export const useOrderForm = () => {
         data.status || ("pending" as "pending" | "delivered" | "cancelled"),
       products: data.items.map((item) => ({
         productId: item.productId || 0,
+        variantId: item.variantId ?? null,
         price: item.price ? parseFloat(item.price) : 0,
         retailPrice: item.retailPrice ? parseFloat(item.retailPrice) : 0,
         wholesalePrice: item.wholesalePrice
@@ -192,6 +197,8 @@ export const useOrderForm = () => {
         quantity: item.quantity ? parseInt(item.quantity) : 0,
         amount: item.amount ? parseFloat(item.amount) : 0,
         observation: item.observation || "",
+        attributes: item.attributes ?? null,
+        values: item.values ?? null,
       })),
     };
 

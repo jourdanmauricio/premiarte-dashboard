@@ -12,17 +12,20 @@ export function transformBudgetsToItemRows(budgets: Budget[]): BudgetItemRow[] {
       budget.items?.map((item) => ({
         id: item.id,
         productId: item.productId,
-        imageUrl: item.imageUrl,
-        imageAlt: item.imageAlt,
-        name: item.name,
-        slug: item.slug,
-        sku: item.sku,
+        variantId: item.variantId ?? null,
+        imageUrl: item.imageUrl ?? "",
+        imageAlt: item.imageAlt ?? "",
+        name: item.name ?? item.product.name,
+        slug: item.slug ?? item.product.slug,
+        sku: item.sku ?? item.product.sku ?? "",
         retailPrice: String(item.retailPrice),
         wholesalePrice: String(item.wholesalePrice),
         price: String(item.price),
         quantity: String(item.quantity),
         amount: String(item.amount),
-        observation: item.observation,
+        observation: item.observation ?? undefined,
+        attributes: item.attributes ?? null,
+        values: item.values ?? null,
       })) ?? []
   );
 }
@@ -64,6 +67,16 @@ export const getBudgetItemColumns = ({
     size: 0,
     minSize: 200,
     cell: ({ row }) => <TruncatedCell value={row.original.name} linesMax={2} />,
+  },
+  {
+    id: "variation",
+    header: "VARIACIÓN",
+    size: 150,
+    cell: ({ row }) => {
+      const { variantId, values } = row.original;
+      if (!variantId || !values?.length) return <div className="text-muted-foreground">-</div>;
+      return <TruncatedCell value={values.join(", ")} linesMax={2} />;
+    },
   },
   {
     id: "sku",

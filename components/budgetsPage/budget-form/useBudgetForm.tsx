@@ -82,6 +82,7 @@ export const useBudgetForm = () => {
             name: item.product.name,
             sku: item.product.sku,
             productId: item.productId,
+            variantId: item.variantId ?? null,
             slug: item.product.slug,
             imageUrl: item.product.images?.[0]?.url ?? "",
             imageAlt: item.product.images?.[0].alt ?? "",
@@ -93,6 +94,9 @@ export const useBudgetForm = () => {
               ? item.wholesalePrice.toString()
               : "0",
             observation: item.observation ?? "",
+            attributes: item.attributes ?? null,
+            values: item.values ?? null,
+            productVariants: item.product.variants ?? null,
           })),
           observation: budget.observation ?? "",
           totalAmount: budget.totalAmount ? budget.totalAmount.toString() : "0",
@@ -209,13 +213,21 @@ export const useBudgetForm = () => {
       totalAmount: data.totalAmount ? parseFloat(data.totalAmount) : 0,
       status: data.status || ("pending" as BudgetStatus),
       products: data.items.map((item) => ({
-        productId: item.productId || 0,
+        id: item.productId || 0,
+        variantId: item.variantId ?? null,
+        name: item.name,
+        slug: item.slug,
+        image: item.imageUrl || "",
         price: item.price ? parseFloat(item.price) : 0,
         quantity: item.quantity ? parseInt(item.quantity) : 0,
         amount: item.amount ? parseFloat(item.amount) : 0,
         observation: item.observation || "",
+        attributes: item.attributes ?? null,
+        values: item.values ?? null,
       })),
     };
+
+    console.log("budgetData", budgetData);
 
     if (mode === "CREATE") {
       await createBudgetMutation.mutateAsync(budgetData as unknown as Budget);

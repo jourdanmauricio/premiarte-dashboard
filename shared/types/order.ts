@@ -6,18 +6,21 @@ import type z from "zod";
 export interface OrderItem {
   id: number;
   productId: number;
+  variantId: string | null;
   product: Product;
-  sku: string;
-  slug: string;
-  name: string;
-  imageUrl: string;
-  imageAlt: string;
+  sku?: string;
+  slug?: string;
+  name?: string;
+  imageUrl?: string;
+  imageAlt?: string;
   retailPrice: number; // precio unitario en centavos
   wholesalePrice: number; // precio unitario en centavos
   price: number; // precio unitario en centavos
   quantity: number;
   amount: number; // precio total del item (price * quantity)
-  observation?: string;
+  observation?: string | null;
+  attributes?: string[] | null;
+  values?: string[] | null;
 }
 
 export interface Order {
@@ -51,12 +54,15 @@ export interface CreateOrderData {
 
 export interface CreateOrderItemData {
   productId: number;
+  variantId?: string | null;
   retailPrice: number;
   wholesalePrice: number;
   price: number;
   quantity: number;
   amount: number;
   observation?: string;
+  attributes?: string[] | null;
+  values?: string[] | null;
 }
 
 export interface UpdateOrderData {

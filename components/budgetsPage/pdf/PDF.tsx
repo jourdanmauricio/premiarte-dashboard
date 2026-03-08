@@ -521,6 +521,9 @@ export const PDF = ({ budget, responsible, customerData }: PDFProps) => {
                     <Text>{item.product.name}</Text>
                   </Link>
                   <Text>{item.product.description}</Text>
+                  {item.variantId && item.values?.length ? (
+                    <Text>{item.values.join(", ")}</Text>
+                  ) : null}
                 </View>
 
                 <Text style={[styles.tableCell, styles.cellQuantity]}>

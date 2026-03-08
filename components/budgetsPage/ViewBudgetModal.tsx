@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Budget } from "@/shared/types/budget";
+import { Budget, BudgetItem } from "@/shared/types/budget";
 
 interface ViewBudgetModalProps {
   open: boolean;
@@ -28,6 +28,12 @@ const ViewBudgetModal = ({
   budget,
 }: ViewBudgetModalProps) => {
   if (!budget) return null;
+
+  const formatVariation = (item: BudgetItem) => {
+    if (item.variantId == null) return "-";
+    if (item.values?.length) return item.values.join(", ");
+    return "-";
+  };
 
   const handlePrint = () => {
     // window.print();
@@ -43,6 +49,7 @@ const ViewBudgetModal = ({
       ?.map(
         (item) => `
     Producto: ${item.product.name}
+    Variación: ${formatVariation(item)}
     Cantidad: ${item.quantity}
     Precio: ${item.price}
     Total: ${item.amount}
@@ -69,7 +76,7 @@ const ViewBudgetModal = ({
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
-        className="max-h-[95%] max-w-4xl sm:max-w-7xl overflow-y-auto w-full"
+        className="max-h-[95%] max-w-4xl sm:max-w-7xl overflow-y-auto overflow-x-hidden w-full"
       >
         <DialogHeader>
           <DialogTitle>Presupuesto {budget.number}</DialogTitle>
@@ -90,33 +97,43 @@ const ViewBudgetModal = ({
             <span className="text-sm">{budget.observation || "-"}</span>
           </div>
         </Card>
-        <Card className="p-4">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Producto</TableHead>
-                <TableHead>Cantidad</TableHead>
-                <TableHead>Precio</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Observación</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {budget.items?.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    {item.product.name}
-                    <br />
-                    {item.product.description}
-                  </TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>{item.price}</TableCell>
-                  <TableCell>{item.amount}</TableCell>
-                  <TableCell>{item.observation || "-"}</TableCell>
+        <Card className="p-4 overflow-hidden min-w-0">
+          <div className="w-full overflow-hidden overflow-y-auto max-h-[min(50vh,400px)]">
+            <Table className="table-fixed w-full">
+              <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[0_1px_0_0_hsl(var(--border))]">
+                <TableRow>
+                  <TableHead className="w-[35%]">Producto</TableHead>
+                  <TableHead className="w-[12%]">Variación</TableHead>
+                  <TableHead className="w-[8%]">Cantidad</TableHead>
+                  <TableHead className="w-[12%]">Precio</TableHead>
+                  <TableHead className="w-[12%]">Total</TableHead>
+                  <TableHead className="w-[21%]">Observación</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {budget.items?.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="w-[35%] whitespace-normal wrap-break-word align-top">
+                      {item.product.name}
+                      <br />
+                      <span className="text-muted-foreground">
+                        {item.product.description}
+                      </span>
+                    </TableCell>
+                    <TableCell className="w-[12%] whitespace-normal wrap-break-word align-top">
+                      {formatVariation(item)}
+                    </TableCell>
+                    <TableCell className="w-[8%] text-right">
+                      {item.quantity}
+                    </TableCell>
+                    <TableCell className="w-[12%] text-right">{item.price}</TableCell>
+                    <TableCell className="w-[12%] text-right">{item.amount}</TableCell>
+                    <TableCell className="w-[21%]">{item.observation || "-"}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Card>
 
         <Card className="p-4">

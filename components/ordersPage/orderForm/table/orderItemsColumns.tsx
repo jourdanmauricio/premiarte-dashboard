@@ -45,6 +45,16 @@ export const getOrderItemColumns = ({
     cell: ({ row }) => <TruncatedCell value={row.original.name} linesMax={2} />,
   },
   {
+    id: "variation",
+    header: "VARIACIÓN",
+    size: 150,
+    cell: ({ row }) => {
+      const { variantId, values } = row.original;
+      if (!variantId || !values?.length) return <div className="text-muted-foreground">-</div>;
+      return <TruncatedCell value={values.join(", ")} linesMax={2} />;
+    },
+  },
+  {
     id: "sku",
     header: "SKU",
     size: 120,

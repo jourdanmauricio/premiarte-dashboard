@@ -3,6 +3,7 @@ import z from "zod";
 export const BudgetItemFormSchema = z.object({
   id: z.number().optional(),
   productId: z.number(),
+  variantId: z.string().nullable().optional(),
   imageUrl: z.string().optional(),
   imageAlt: z.string().optional(),
   name: z.string().min(1, "El nombre es requerido"),
@@ -14,6 +15,10 @@ export const BudgetItemFormSchema = z.object({
   quantity: z.string().min(1, "La cantidad es requerida"),
   amount: z.string().min(0, "El monto es requerido"),
   observation: z.string().optional(),
+  attributes: z.array(z.string()).nullable().optional(),
+  values: z.array(z.string()).nullable().optional(),
+  /** Variantes del producto — solo se usan en el modal, no se envían al backend */
+  productVariants: z.array(z.any()).nullable().optional(),
 });
 
 export const BudgetFormSchema = z.object({
