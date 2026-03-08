@@ -68,15 +68,11 @@ const ProductTabs = ({
     variants: !!errors.variants,
   };
 
-  console.log("tabHasError", tabHasError);
-  console.log("form.watch('variants')", form.watch("variants"));
-  console.log("Errores", form.formState.errors);
-
   return (
     <Tabs
       value={activeTab}
       onValueChange={handleChangeTab}
-      className={cn("mt-4 h-full", className)}
+      className={cn("mt-4 flex h-full min-h-0 flex-col", className)}
     >
       <TabsList>
         <TabsTrigger
@@ -130,8 +126,13 @@ const ProductTabs = ({
       <TabsContent value="related">
         <RelatedProductTab form={form} />
       </TabsContent>
-      <TabsContent value="variants">
-        <VariantsTab form={form} />
+      <TabsContent
+        value="variants"
+        className="flex min-h-0 flex-1 flex-col overflow-hidden"
+      >
+        <div className="min-h-0 max-h-[calc(90vh-18rem)] flex-1 overflow-y-auto">
+          <VariantsTab form={form} />
+        </div>
       </TabsContent>
     </Tabs>
   );

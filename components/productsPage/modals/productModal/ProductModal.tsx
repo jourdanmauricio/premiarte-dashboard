@@ -46,8 +46,11 @@ const ProductModal = ({ open, closeModal, product }: ProductModalProps) => {
           maxWidth: "900px",
         }}
       >
-        <div style={{ minWidth: "600px" }} className="flex h-full flex-col">
-          <DialogHeader className="flex min-h-0 flex-1 flex-col">
+        <div
+          style={{ minWidth: "600px" }}
+          className="flex h-full min-h-0 flex-col overflow-hidden"
+        >
+          <DialogHeader className="flex min-h-0 flex-1 flex-col overflow-hidden">
             <DialogTitle className="dialog-title">
               {mode === "CREATE"
                 ? "Nuevo producto"
@@ -57,7 +60,7 @@ const ProductModal = ({ open, closeModal, product }: ProductModalProps) => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit, onError)}
-                className="flex min-h-0 flex-1 flex-col"
+                className="flex min-h-0 flex-1 flex-col overflow-hidden"
               >
                 <ProductTabs
                   form={form}
