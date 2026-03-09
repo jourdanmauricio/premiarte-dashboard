@@ -13,6 +13,7 @@ import { CustomTable } from "@/components/ui/custom/CustomTable";
 import CustomAlertDialog from "@/components/ui/custom/custom-alert-dialog";
 import { getOrderColumns } from "@/components/ordersPage/table/orderColumns";
 import { FilterOrders } from "@/components/ordersPage/table/FilterOrders";
+import { ViewOrderModal } from "@/components/ordersPage/ViewOrderModal";
 import { orderStatusList } from "@/shared/constanst";
 import { useGetOrders, useDeleteOrder } from "@/hooks/use-orders";
 import { useRouter } from "next/navigation";
@@ -20,6 +21,7 @@ import { Row } from "@tanstack/react-table";
 
 const OrdersPage = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageIndex, setPageIndex] = useState(0);
@@ -38,13 +40,6 @@ const OrdersPage = () => {
     }
   }, [currentOrder, deleteOrder]);
 
-  //   const handleDownloadTemplate = () => {
-  //     if (!data || data.length === 0) {
-  //       toast.error("No hay pedidos para descargar");
-  //       return;
-  //     }
-  //   };
-
   const handleAddOrder = () => {
     router.push("/dashboard/orders/new");
   };
@@ -62,13 +57,19 @@ const OrdersPage = () => {
     [router],
   );
 
+  const handleViewOrder = useCallback((order: Order) => {
+    setCurrentOrder(order);
+    setViewModalIsOpen(true);
+  }, []);
+
   const columns = useMemo(
     () =>
       getOrderColumns({
         onDelete: handleDeleteOrder,
         onEdit: handleEditOrder,
+        onView: handleViewOrder,
       }),
-    [handleDeleteOrder, handleEditOrder],
+    [handleDeleteOrder, handleEditOrder, handleViewOrder],
   );
 
   const globalFilterFn = (row: Row<Order>) => {
@@ -99,34 +100,63 @@ const OrdersPage = () => {
 
   const handleDownload = async () => {
     if (!data || data.length === 0) {
-      toast.error("No hay presupuestos para descargar");
+      toast.error("No hay pedidos para descargar");
       return;
     }
 
     try {
-      // Preparar datos para Excel (solo campos simples, sin categorías, imágenes ni descuentos)
-      const excelData = data.map((order) => ({
-        Id: order.id,
-        Nombre: order.customer?.name,
-        Email: order.customer?.email,
-        Telefono: order.customer?.phone,
-        Tipo: order.type === "wholesale" ? "Mayorista" : "Minorista",
-        Total: order.totalAmount,
-        Status: orderStatusList.find((status) => status.id === order.status)
-          ?.description,
-        CreatedAt: order.createdAt
-          ? new Date(order.createdAt).toLocaleDateString()
-          : "",
-        Observacion: order.observation,
-      }));
+      // Una fila por ítem; se repiten los datos del pedido en cada fila (como en presupuestos)
+      const excelData: Record<string, string | number | undefined | null>[] =
+        [];
+      for (const order of data) {
+        const orderFields = {
+          Id: order.id,
+          Nombre: order.customer?.name,
+          Email: order.customer?.email,
+          Telefono: order.customer?.phone,
+          Tipo: order.type === "wholesale" ? "Mayorista" : "Minorista",
+          Total: order.totalAmount,
+          Estado: orderStatusList.find((status) => status.id === order.status)
+            ?.description,
+          CreatedAt: order.createdAt
+            ? new Date(order.createdAt).toLocaleDateString()
+            : "",
+          Observacion: order.observation ?? "",
+        };
+        const items = "items" in order && Array.isArray(order.items) ? order.items : [];
+        if (items.length === 0) {
+          excelData.push(orderFields);
+        } else {
+          for (const item of items) {
+            excelData.push({
+              ...orderFields,
+              Producto: item.name ?? item.product?.name ?? "",
+              SKU: item.sku ?? "",
+              Cantidad: item.quantity,
+              PrecioUnit: item.price,
+              Subtotal: item.amount,
+              ObservacionItem: item.observation ?? "",
+              Variacion:
+                item.values && item.values.length > 0
+                  ? item.values.join(" - ")
+                  : "",
+            });
+          }
+        }
+      }
 
-      // Solo usar los datos existentes (sin filas vacías adicionales)
+      if (excelData.length === 0) {
+        toast.error("No hay ítems en los pedidos para descargar");
+        return;
+      }
 
       // Crear workbook
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(excelData);
 
-      // Función para ajustar automáticamente el ancho de las columnas
+      const headers = Object.keys(excelData[0]) as string[];
+      const DESC_MAX_WIDTH = 150;
+
       const autoFitColumns = (
         worksheet: XLSX.WorkSheet,
         worksheetData: (string | number | null | undefined)[][],
@@ -138,22 +168,21 @@ const OrdersPage = () => {
               return cell ? cell.toString().length + 2 : 10;
             }),
           );
-
-          // Limitar el ancho máximo de la columna descripción (triple del tamaño anterior)
-          if (colIndex === 8) {
-            // Columna "Descripción"
-            return { wch: Math.min(maxWidth, 150) };
+          const header = headers[colIndex];
+          if (
+            header === "Observacion" ||
+            header === "ObservacionItem"
+          ) {
+            return { wch: Math.min(maxWidth, DESC_MAX_WIDTH) };
           }
-
           return { wch: maxWidth };
         });
         worksheet["!cols"] = colWidths;
       };
 
-      // Convertir datos a array 2D para autoFitColumns
       const worksheetData = [
-        Object.keys(excelData[0]), // Encabezados
-        ...excelData.map((row) => Object.values(row)), // Datos
+        headers,
+        ...excelData.map((row) => Object.values(row)),
       ];
 
       autoFitColumns(ws, worksheetData);
@@ -216,6 +245,17 @@ const OrdersPage = () => {
           open={deleteModalIsOpen}
           onCloseDialog={() => {
             setDeleteModalIsOpen(false);
+            setCurrentOrder(null);
+          }}
+        />
+      )}
+
+      {viewModalIsOpen && (
+        <ViewOrderModal
+          open={viewModalIsOpen}
+          orderId={currentOrder?.id ?? null}
+          closeModal={() => {
+            setViewModalIsOpen(false);
             setCurrentOrder(null);
           }}
         />

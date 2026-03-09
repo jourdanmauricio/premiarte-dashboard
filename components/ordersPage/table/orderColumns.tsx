@@ -1,4 +1,4 @@
-import { PencilIcon, Trash2Icon } from "lucide-react";
+import { EyeIcon, PencilIcon, Trash2Icon } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,13 @@ import { Badge } from "@/components/ui/badge";
 type DataTableColumnsProps = {
   onDelete: (order: Order) => void;
   onEdit: (order: Order) => void;
+  onView: (order: Order) => void;
 };
 
 export const getOrderColumns = ({
   onDelete,
   onEdit,
+  onView,
 }: DataTableColumnsProps): ColumnDef<Order>[] => [
   // {
   //   accessorKey: "id",
@@ -89,11 +91,21 @@ export const getOrderColumns = ({
   {
     id: "actions",
     header: "ACCIONES",
-    size: 90,
+    size: 120,
     cell: ({ row }) => {
       const order = row.original;
       return (
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center justify-center w-full gap-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onView(order)}
+            className="h-8 w-8 p-0 hover:bg-gray-100"
+            type="button"
+            title="Ver"
+          >
+            <EyeIcon className="h-4 w-4 text-gray-600" />
+          </Button>
           <Button
             variant="ghost"
             size="sm"
