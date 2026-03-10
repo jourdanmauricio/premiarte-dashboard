@@ -1,23 +1,18 @@
 import { z } from "zod";
-import { useForm, useWatch } from "react-hook-form";
-import { useCallback, useMemo, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { OrderFormSchema } from "@/shared/schemas";
-import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { getOrderItemColumns } from "./table/orderItemsColumns";
-import type {
-  Order,
-  OrderItem,
-  OrderItemRow,
-  OrderWithItems,
-} from "@/shared/types";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useMemo, useState } from "react";
+
 import {
   useCreateOrder,
   useGetOrderById,
   useUpdateOrder,
 } from "@/hooks/use-orders";
+import { useParams } from "next/navigation";
+import { OrderFormSchema } from "@/shared/schemas";
+import { getOrderItemColumns } from "./table/orderItemsColumns";
+import type { Order, OrderItem, OrderItemRow } from "@/shared/types";
 
 const defaultValues = {
   name: "",
@@ -79,6 +74,7 @@ export const useOrderForm = () => {
               ? item.wholesalePrice.toString()
               : "0",
             observation: item.observation ?? "",
+            customText: item.customText ?? "",
             attributes: item.attributes ?? null,
             values: item.values ?? null,
             productVariants: item.product.variants ?? null,
@@ -197,6 +193,7 @@ export const useOrderForm = () => {
         quantity: item.quantity ? parseInt(item.quantity) : 0,
         amount: item.amount ? parseFloat(item.amount) : 0,
         observation: item.observation || "",
+        customText: item.customText || "",
         attributes: item.attributes ?? null,
         values: item.values ?? null,
       })),

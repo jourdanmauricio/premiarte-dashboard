@@ -1,12 +1,12 @@
 import type z from "zod";
-
-import BooleanCheckbox from "@/components/ui/custom/boolean-checkbox";
-import { InputField } from "@/components/ui/custom/input-field";
-import InputNumberField from "@/components/ui/custom/input-number-field";
-import { TextareaField } from "@/components/ui/custom/textarea-field";
-import { generateSlug } from "@/shared/functions";
-import { ProductFormSchema } from "@/shared/schemas";
 import { UseFormReturn } from "react-hook-form";
+
+import { ProductFormSchema } from "@/shared/schemas";
+import { generateSlug } from "@/shared/functions";
+import { InputField } from "@/components/ui/custom/input-field";
+import { TextareaField } from "@/components/ui/custom/textarea-field";
+import BooleanCheckbox from "@/components/ui/custom/boolean-checkbox";
+import InputNumberField from "@/components/ui/custom/input-number-field";
 
 interface GeneralTabProps {
   form: UseFormReturn<z.infer<typeof ProductFormSchema>>;
@@ -33,24 +33,31 @@ const GeneralTab = ({ form, handlePriceChange }: GeneralTabProps) => {
       />
       <InputField label="Slug" name="slug" placeholder="Slug" form={form} />
 
+      <div className="flex flex-col">
+        <BooleanCheckbox label="Activo" name="isActive" form={form} />
+        <BooleanCheckbox label="Recomendado" name="isFeatured" form={form} />
+        <BooleanCheckbox
+          label="Personalizable"
+          name="isCustomizable"
+          form={form}
+        />
+      </div>
+
       <TextareaField
         label="Descripción"
         name="description"
         placeholder="Descripción"
         form={form}
-        className="col-span-2"
+        rows={6}
+        // className="col-span-2"
       />
-
-      <div className="flex gap-4">
-        <BooleanCheckbox label="Activo" name="isActive" form={form} />
-        <BooleanCheckbox label="Recomendado" name="isFeatured" form={form} />
-      </div>
 
       <InputField label="SKU" name="sku" placeholder="SKU" form={form} />
 
       {hasVariants ? (
         <p className="col-span-2 text-muted-foreground text-sm">
-          Este producto tiene variaciones. El precio y el stock se gestionan desde la pestaña Variantes.
+          Este producto tiene variaciones. El precio y el stock se gestionan
+          desde la pestaña Variantes.
         </p>
       ) : (
         <>

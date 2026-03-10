@@ -24,9 +24,10 @@ export function transformBudgetsToItemRows(budgets: Budget[]): BudgetItemRow[] {
         quantity: String(item.quantity),
         amount: String(item.amount),
         observation: item.observation ?? undefined,
+        customText: item.customText ?? undefined,
         attributes: item.attributes ?? null,
         values: item.values ?? null,
-      })) ?? []
+      })) ?? [],
   );
 }
 
@@ -34,8 +35,6 @@ type DataTableColumnsProps = {
   onDelete: (item: BudgetItemRow) => void;
   onEdit: (item: BudgetItemRow) => void;
 };
-
-// Tipo para los datos de la tabla (cada fila será un item individual)
 
 export const getBudgetItemColumns = ({
   onDelete,
@@ -74,7 +73,8 @@ export const getBudgetItemColumns = ({
     size: 150,
     cell: ({ row }) => {
       const { variantId, values } = row.original;
-      if (!variantId || !values?.length) return <div className="text-muted-foreground">-</div>;
+      if (!variantId || !values?.length)
+        return <div className="text-muted-foreground">-</div>;
       return <TruncatedCell value={values.join(", ")} linesMax={2} />;
     },
   },
@@ -106,6 +106,15 @@ export const getBudgetItemColumns = ({
       <div className="text-right">
         ${row.original.amount === "0" ? "0" : row.original.amount.toString()}
       </div>
+    ),
+  },
+  {
+    id: "customText",
+    header: "TEXTO PERSONALIZADO",
+    size: 0,
+    minSize: 200,
+    cell: ({ row }) => (
+      <TruncatedCell value={row.original.customText ?? ""} linesMax={1} />
     ),
   },
   {

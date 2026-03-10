@@ -11,7 +11,6 @@ export interface Variant {
   values: string[];
 }
 
-// Tipo para los productos
 export interface Product {
   id?: number;
   name: string;
@@ -21,6 +20,7 @@ export interface Product {
   stock?: number;
   isActive: boolean;
   isFeatured: boolean;
+  isCustomizable: boolean;
   retailPrice?: number | undefined;
   wholesalePrice?: number | undefined;
   priceUpdatedAt?: string;

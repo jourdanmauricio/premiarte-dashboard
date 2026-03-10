@@ -4,6 +4,7 @@ export const BudgetItemFormSchema = z.object({
   id: z.number().optional(),
   productId: z.number(),
   variantId: z.string().nullable().optional(),
+  customText: z.string().optional(),
   imageUrl: z.string().optional(),
   imageAlt: z.string().optional(),
   name: z.string().min(1, "El nombre es requerido"),

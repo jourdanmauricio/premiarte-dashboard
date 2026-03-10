@@ -31,11 +31,7 @@ const formatVariation = (item: OrderItem) => {
   return "-";
 };
 
-const ViewOrderModal = ({
-  open,
-  closeModal,
-  orderId,
-}: ViewOrderModalProps) => {
+const ViewOrderModal = ({ open, closeModal, orderId }: ViewOrderModalProps) => {
   const { data: order, isLoading } = useGetOrderById(
     orderId?.toString() ?? "",
     open && orderId != null,
@@ -89,7 +85,9 @@ Total: ${order.totalAmount}
         className="max-h-[95%] max-w-4xl sm:max-w-7xl overflow-y-auto overflow-x-hidden w-full"
       >
         <DialogHeader>
-          <DialogTitle>{orderId != null ? `Pedido #${orderId}` : "Pedido"}</DialogTitle>
+          <DialogTitle>
+            {orderId != null ? `Pedido #${orderId}` : "Pedido"}
+          </DialogTitle>
         </DialogHeader>
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
@@ -120,7 +118,9 @@ Total: ${order.totalAmount}
             </div>
           </>
         ) : (
-          <p className="text-muted-foreground py-4">No se pudo cargar el pedido.</p>
+          <p className="text-muted-foreground py-4">
+            No se pudo cargar el pedido.
+          </p>
         )}
       </DialogContent>
     </Dialog>
@@ -134,11 +134,17 @@ function OrderInfoCard({ order }: { order: OrderWithItems }) {
     <Card className="p-4">
       <div className="grid grid-cols-2 gap-4 items-center">
         Nombre
-        <span className="text-sm">{order.customer?.name ?? order.name ?? "-"}</span>
+        <span className="text-sm">
+          {order.customer?.name ?? order.name ?? "-"}
+        </span>
         Email
-        <span className="text-sm">{order.customer?.email ?? order.email ?? "-"}</span>
+        <span className="text-sm">
+          {order.customer?.email ?? order.email ?? "-"}
+        </span>
         Teléfono
-        <span className="text-sm">{order.customer?.phone ?? order.phone ?? "-"}</span>
+        <span className="text-sm">
+          {order.customer?.phone ?? order.phone ?? "-"}
+        </span>
         Estado
         <span className="text-sm">{statusLabel}</span>
         Tipo
@@ -191,6 +197,14 @@ function ItemsTable({
                       </span>
                     </>
                   )}
+                  {item.customText != null && (
+                    <>
+                      <br />
+                      <span className="text-muted-foreground">
+                        Texto personalizado: {item.customText}
+                      </span>
+                    </>
+                  )}
                 </TableCell>
                 <TableCell className="w-[12%] whitespace-normal wrap-break-word align-top">
                   {formatVariation(item)}
@@ -198,9 +212,15 @@ function ItemsTable({
                 <TableCell className="w-[8%] text-right">
                   {item.quantity}
                 </TableCell>
-                <TableCell className="w-[12%] text-right">{item.price}</TableCell>
-                <TableCell className="w-[12%] text-right">{item.amount}</TableCell>
-                <TableCell className="w-[21%]">{item.observation || "-"}</TableCell>
+                <TableCell className="w-[12%] text-right">
+                  {item.price}
+                </TableCell>
+                <TableCell className="w-[12%] text-right">
+                  {item.amount}
+                </TableCell>
+                <TableCell className="w-[21%]">
+                  {item.observation || "-"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

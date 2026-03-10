@@ -113,6 +113,7 @@ const BudgetsPage = () => {
             retailPrice: item.retailPrice,
             wholesalePrice: item.wholesalePrice,
             observation: item.observation,
+            customText: item.customText,
             attributes: item.attributes ?? null,
             values: item.values ?? null,
           })) || [],
@@ -165,12 +166,12 @@ const BudgetsPage = () => {
         [];
       for (const budget of data) {
         const budgetFields = {
-          Id: budget.number,
+          Numero: budget.number,
           Nombre: budget.customer?.name,
           Tipo: budget.type === "wholesale" ? "Mayorista" : "Minorista",
           TotalPresupuesto: budget.totalAmount,
           Estado: translateBudgetStatus(budget.status),
-          CreatedAt: budget.createdAt
+          FechaCreacion: budget.createdAt
             ? new Date(budget.createdAt).toLocaleDateString()
             : "",
           Observacion: budget.observation ?? "",
@@ -185,6 +186,7 @@ const BudgetsPage = () => {
             PrecioUnit: item.price,
             Subtotal: item.amount,
             ObservacionItem: item.observation ?? "",
+            TextoPersonalizado: item.customText ?? "",
             Variacion:
               item.values && item.values.length > 0
                 ? item.values.join(" - ")
@@ -219,6 +221,7 @@ const BudgetsPage = () => {
           const header = headers[colIndex];
           if (
             header === "Observacion" ||
+            header === "TextoPersonalizado" ||
             header === "ObservacionItem"
           ) {
             return { wch: Math.min(maxWidth, DESC_MAX_WIDTH) };

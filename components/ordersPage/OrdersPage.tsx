@@ -118,12 +118,13 @@ const OrdersPage = () => {
           Total: order.totalAmount,
           Estado: orderStatusList.find((status) => status.id === order.status)
             ?.description,
-          CreatedAt: order.createdAt
+          FechaCreacion: order.createdAt
             ? new Date(order.createdAt).toLocaleDateString()
             : "",
           Observacion: order.observation ?? "",
         };
-        const items = "items" in order && Array.isArray(order.items) ? order.items : [];
+        const items =
+          "items" in order && Array.isArray(order.items) ? order.items : [];
         if (items.length === 0) {
           excelData.push(orderFields);
         } else {
@@ -135,6 +136,7 @@ const OrdersPage = () => {
               Cantidad: item.quantity,
               PrecioUnit: item.price,
               Subtotal: item.amount,
+              TextoPersonalizado: item.customText ?? "",
               ObservacionItem: item.observation ?? "",
               Variacion:
                 item.values && item.values.length > 0
@@ -171,7 +173,8 @@ const OrdersPage = () => {
           const header = headers[colIndex];
           if (
             header === "Observacion" ||
-            header === "ObservacionItem"
+            header === "ObservacionItem" ||
+            header === "TextoPersonalizado"
           ) {
             return { wch: Math.min(maxWidth, DESC_MAX_WIDTH) };
           }

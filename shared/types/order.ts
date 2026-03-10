@@ -19,6 +19,7 @@ export interface OrderItem {
   quantity: number;
   amount: number; // precio total del item (price * quantity)
   observation?: string | null;
+  customText?: string | null;
   attributes?: string[] | null;
   values?: string[] | null;
 }

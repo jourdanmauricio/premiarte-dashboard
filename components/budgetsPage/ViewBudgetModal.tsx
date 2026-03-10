@@ -49,6 +49,7 @@ const ViewBudgetModal = ({
       ?.map(
         (item) => `
     Producto: ${item.product.name}
+    Texto personalizado: ${item.customText || "-"}
     Variación: ${formatVariation(item)}
     Cantidad: ${item.quantity}
     Precio: ${item.price}
@@ -61,7 +62,6 @@ const ViewBudgetModal = ({
     Total: ${budget.totalAmount}
     `;
 
-    console.log(content);
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -70,6 +70,7 @@ const ViewBudgetModal = ({
     a.click();
   };
 
+  console.log("Budget", budget);
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogContent
@@ -119,6 +120,14 @@ const ViewBudgetModal = ({
                       <span className="text-muted-foreground">
                         {item.product.description}
                       </span>
+                      {item.customText && (
+                        <>
+                          <br />
+                          <span className="text-muted-foreground">
+                            Texto personalizado: {item.customText}
+                          </span>
+                        </>
+                      )}
                     </TableCell>
                     <TableCell className="w-[12%] whitespace-normal wrap-break-word align-top">
                       {formatVariation(item)}
@@ -126,9 +135,15 @@ const ViewBudgetModal = ({
                     <TableCell className="w-[8%] text-right">
                       {item.quantity}
                     </TableCell>
-                    <TableCell className="w-[12%] text-right">{item.price}</TableCell>
-                    <TableCell className="w-[12%] text-right">{item.amount}</TableCell>
-                    <TableCell className="w-[21%]">{item.observation || "-"}</TableCell>
+                    <TableCell className="w-[12%] text-right">
+                      {item.price}
+                    </TableCell>
+                    <TableCell className="w-[12%] text-right">
+                      {item.amount}
+                    </TableCell>
+                    <TableCell className="w-[21%]">
+                      {item.observation || "-"}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

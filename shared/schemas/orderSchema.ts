@@ -15,6 +15,7 @@ export const OrderItemFormSchema = z.object({
   quantity: z.string().min(1, "La cantidad es requerida"),
   amount: z.string().min(0, "El monto es requerido"),
   observation: z.string().optional(),
+  customText: z.string().optional(),
   attributes: z.array(z.string()).nullable().optional(),
   values: z.array(z.string()).nullable().optional(),
   /** Variantes del producto — solo se usan en el modal, no se envían al backend */

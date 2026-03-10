@@ -9,8 +9,8 @@ import type { Product } from "@/shared/types";
 import { Button } from "@/components/ui/button";
 import { DialogHeader } from "@/components/ui/dialog";
 import { SubmitButton } from "@/components/ui/custom/submit-button";
-import useProductModal from "@/components/productsPage/modals/productModal/useProductModal";
 import { ProductTabs } from "@/components/productsPage/modals/productModal/ProductTabs";
+import { useProductModal } from "@/components/productsPage/modals/productModal/useProductModal";
 
 interface ProductModalProps {
   open: boolean;

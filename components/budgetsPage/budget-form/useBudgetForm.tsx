@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { BudgetFormSchema } from "@/shared/schemas";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { getBudgetItemColumns } from "./table/budgetItemsColumns";
 import type {
@@ -45,7 +45,6 @@ export const useBudgetForm = () => {
 
   const { id } = useParams();
   const mode = id === "new" ? "CREATE" : "EDIT";
-  const router = useRouter();
 
   const { data: budget, isLoading: isBudgetLoading } = useGetBudgetById(
     id?.toString() || "",
@@ -94,6 +93,7 @@ export const useBudgetForm = () => {
               ? item.wholesalePrice.toString()
               : "0",
             observation: item.observation ?? "",
+            customText: item.customText || "",
             attributes: item.attributes ?? null,
             values: item.values ?? null,
             productVariants: item.product.variants ?? null,
@@ -222,16 +222,14 @@ export const useBudgetForm = () => {
         quantity: item.quantity ? parseInt(item.quantity) : 0,
         amount: item.amount ? parseFloat(item.amount) : 0,
         observation: item.observation || "",
+        customText: item.customText || "",
         attributes: item.attributes ?? null,
         values: item.values ?? null,
       })),
     };
 
-    console.log("budgetData", budgetData);
-
     if (mode === "CREATE") {
       await createBudgetMutation.mutateAsync(budgetData as unknown as Budget);
-      // La redirección a /dashboard/budgets la maneja onSuccess en useCreateBudget
     } else {
       await updateBudgetMutation.mutateAsync({
         id: id?.toString() || "",

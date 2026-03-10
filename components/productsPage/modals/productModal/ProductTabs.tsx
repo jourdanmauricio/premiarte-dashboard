@@ -1,15 +1,15 @@
 import type z from "zod";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { UseFormReturn } from "react-hook-form";
 
-import { GeneralTab } from "@/components/productsPage/modals/productModal/Tabs/GeneralTab";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductFormSchema } from "@/shared/schemas";
-import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImagesTab } from "@/components/productsPage/modals/productModal/Tabs/ImagesTab";
+import { GeneralTab } from "@/components/productsPage/modals/productModal/Tabs/GeneralTab";
+import { VariantsTab } from "@/components/productsPage/modals/productModal/Tabs/VariantsTab";
 import { CategoryTab } from "@/components/productsPage/modals/productModal/Tabs/CategoryTab";
 import { RelatedProductTab } from "@/components/productsPage/modals/productModal/Tabs/RelatedProductTab";
-import { VariantsTab } from "@/components/productsPage/modals/productModal/Tabs/VariantsTab";
 
 interface ProductTabsProps {
   form: UseFormReturn<z.infer<typeof ProductFormSchema>>;

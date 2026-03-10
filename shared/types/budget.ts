@@ -23,6 +23,7 @@ export interface BudgetItem {
   attributes?: string[] | null;
   /** Valores de la variante (ej: ["20 cm", "Plata"]) */
   values?: string[] | null;
+  customText?: string | null;
 }
 
 export interface Budget {

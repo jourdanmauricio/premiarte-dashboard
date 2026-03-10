@@ -1,8 +1,14 @@
-import { cn } from '@/lib/utils';
-import { useFormContext, type UseFormReturn } from 'react-hook-form';
+import { cn } from "@/lib/utils";
+import { useFormContext, type UseFormReturn } from "react-hook-form";
 
-import { Checkbox } from '@/components/ui/checkbox';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 type BooleanCheckboxProps = {
   name: string;
@@ -34,7 +40,9 @@ export default function BooleanCheckbox({
       name={name}
       render={({ field }) => (
         <div>
-          <FormItem className={`flex flex-row items-center space-y-0 space-x-3 p-4 ${className}`}>
+          <FormItem
+            className={`flex flex-row items-center space-y-0 space-x-1 p-4 ${className}`}
+          >
             <FormControl>
               <Checkbox
                 checked={Boolean(field.value)}
@@ -49,16 +57,18 @@ export default function BooleanCheckbox({
             </FormControl>
             <div className={`space-y-1 leading-none ${labelClassName}`}>
               <FormLabel
-                className={`text-base font-normal ${labelClassName} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                className={`text-base font-normal ${labelClassName} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
               >
                 {label}
               </FormLabel>
             </div>
           </FormItem>
           <div
-            className={`relative transition-all duration-300 ease-in-out ${fieldState.invalid ? 'opacity-100' : 'opacity-0'}`}
+            className={`relative transition-all duration-300 ease-in-out ${fieldState.invalid ? "opacity-100" : "opacity-0"}`}
           >
-            <FormMessage className={cn('absolute top-1 font-normal', errorClassName)} />
+            <FormMessage
+              className={cn("absolute top-1 font-normal", errorClassName)}
+            />
           </div>
         </div>
       )}

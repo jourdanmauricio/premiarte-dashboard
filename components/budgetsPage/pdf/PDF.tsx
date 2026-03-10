@@ -521,8 +521,11 @@ export const PDF = ({ budget, responsible, customerData }: PDFProps) => {
                     <Text>{item.product.name}</Text>
                   </Link>
                   <Text>{item.product.description}</Text>
+                  {item.customText && (
+                    <Text>Texto personalizado: {item.customText}</Text>
+                  )}
                   {item.variantId && item.values?.length ? (
-                    <Text>{item.values.join(", ")}</Text>
+                    <Text>Variación: {item.values.join(", ")}</Text>
                   ) : null}
                 </View>
 

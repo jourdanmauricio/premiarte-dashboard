@@ -43,6 +43,7 @@ const defaultValues = {
   quantity: "1",
   amount: "",
   observation: "",
+  customText: "",
   variantId: null,
   attributes: null,
   values: null,
@@ -54,12 +55,12 @@ const defaultValues = {
 /** Encuentra la variante que coincide exactamente con los valores seleccionados */
 function findVariant(
   variants: Variant[],
-  selectedValues: (string | null)[]
+  selectedValues: (string | null)[],
 ): Variant | null {
   if (selectedValues.some((v) => v == null)) return null;
   return (
     variants.find((v) =>
-      v.values.every((val, i) => val === selectedValues[i])
+      v.values.every((val, i) => val === selectedValues[i]),
     ) ?? null
   );
 }
@@ -93,6 +94,7 @@ const ItemModal = ({
             quantity: item.quantity.toString(),
             amount: item.amount,
             observation: item.observation || "",
+            customText: item.customText || "",
             attributes: item.attributes ?? null,
             values: item.values ?? null,
             productVariants: item.productVariants ?? null,
@@ -101,11 +103,11 @@ const ItemModal = ({
   });
 
   const [productVariants, setProductVariants] = useState<Variant[] | null>(
-    (item?.productVariants as Variant[]) ?? null
+    (item?.productVariants as Variant[]) ?? null,
   );
 
   const [selectedValues, setSelectedValues] = useState<(string | null)[]>(
-    item?.values ?? []
+    item?.values ?? [],
   );
 
   const watchName = useWatch({
@@ -123,8 +125,10 @@ const ItemModal = ({
         values: item.values ?? null,
         productVariants: item.productVariants ?? null,
       });
-      setProductVariants((item.productVariants as Variant[]) ?? null);
-      setSelectedValues(item.values ?? []);
+      queueMicrotask(() => {
+        setProductVariants((item.productVariants as Variant[]) ?? null);
+        setSelectedValues(item.values ?? []);
+      });
     }
   }, [mode, item, form]);
 
@@ -150,12 +154,14 @@ const ItemModal = ({
         form.setValue("attributes", matched.attributes, { shouldDirty: true });
         form.setValue("values", matched.values, { shouldDirty: true });
         form.setValue("retailPrice", variantRetailPrice, { shouldDirty: true });
-        form.setValue("wholesalePrice", variantWholesalePrice, { shouldDirty: true });
+        form.setValue("wholesalePrice", variantWholesalePrice, {
+          shouldDirty: true,
+        });
         form.setValue("price", price, { shouldDirty: true });
         form.setValue(
           "amount",
           (+price * +form.getValues("quantity")).toString(),
-          { shouldDirty: true }
+          { shouldDirty: true },
         );
       } else {
         form.setValue("variantId", null, { shouldDirty: true });
@@ -163,7 +169,7 @@ const ItemModal = ({
         form.setValue("values", null, { shouldDirty: true });
       }
     },
-    [productVariants, selectedValues, type, form]
+    [productVariants, selectedValues, type, form],
   );
 
   const onSubmit = (data: z.infer<typeof OrderItemFormSchema>) => {
@@ -181,7 +187,7 @@ const ItemModal = ({
 
     setProductVariants(variants);
     setSelectedValues(
-      hasVariants ? new Array(variants[0].attributes.length).fill(null) : []
+      hasVariants ? new Array(variants[0].attributes.length).fill(null) : [],
     );
 
     form.setValue("variantId", null);
@@ -196,13 +202,17 @@ const ItemModal = ({
     form.setValue("slug", product.slug);
     form.setValue("sku", product.sku || "");
     form.setValue("observation", "", { shouldDirty: true });
+    form.setValue("customText", "", { shouldDirty: true });
 
     if (!hasVariants) {
       const { price, retailPrice, wholesalePrice } = setPrices(type, product);
       form.setValue("price", price);
       form.setValue("wholesalePrice", wholesalePrice);
       form.setValue("retailPrice", retailPrice);
-      form.setValue("amount", (+price * +form.getValues("quantity")).toString());
+      form.setValue(
+        "amount",
+        (+price * +form.getValues("quantity")).toString(),
+      );
     } else {
       form.setValue("price", "0");
       form.setValue("retailPrice", "0");
@@ -280,7 +290,7 @@ const ItemModal = ({
                     form.setValue(
                       "amount",
                       (+form.getValues("price") * +e.target.value).toString(),
-                      { shouldDirty: true }
+                      { shouldDirty: true },
                     );
                   }}
                 />
@@ -295,8 +305,10 @@ const ItemModal = ({
                   onChangeInputNumberField={(e) => {
                     form.setValue(
                       "amount",
-                      (+e.target.value * +form.getValues("quantity")).toString(),
-                      { shouldDirty: true }
+                      (
+                        +e.target.value * +form.getValues("quantity")
+                      ).toString(),
+                      { shouldDirty: true },
                     );
                     if (type === "retail") {
                       form.setValue("retailPrice", e.target.value, {
@@ -322,6 +334,14 @@ const ItemModal = ({
               />
 
               <TextareaField
+                label="Texto personalizado"
+                name="customText"
+                placeholder="Texto personalizado"
+                form={form}
+                className="w-full"
+              />
+
+              <TextareaField
                 label="Observación"
                 name="observation"
                 placeholder="Observación"
@@ -342,7 +362,9 @@ const ItemModal = ({
                   text={mode === "CREATE" ? "Agregar producto" : "Aceptar"}
                   className="min-w-[150px]"
                   isLoading={false}
-                  disabled={!form.formState.isDirty || !allVariantValuesSelected}
+                  disabled={
+                    !form.formState.isDirty || !allVariantValuesSelected
+                  }
                 />
               </div>
             </form>

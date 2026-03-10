@@ -11,18 +11,10 @@ type DataTableColumnsProps = {
   onEdit: (item: OrderItemRow) => void;
 };
 
-// Tipo para los datos de la tabla (cada fila será un item individual)
-
 export const getOrderItemColumns = ({
   onDelete,
   onEdit,
 }: DataTableColumnsProps): ColumnDef<OrderItemRow>[] => [
-  // {
-  //   id: 'id',
-  //   header: 'ID',
-  //   size: 100,
-  //   cell: ({ row }) => <div>{row.original.id}</div>,
-  // },
   {
     id: "image",
     header: "IMAGEN",
@@ -50,7 +42,8 @@ export const getOrderItemColumns = ({
     size: 150,
     cell: ({ row }) => {
       const { variantId, values } = row.original;
-      if (!variantId || !values?.length) return <div className="text-muted-foreground">-</div>;
+      if (!variantId || !values?.length)
+        return <div className="text-muted-foreground">-</div>;
       return <TruncatedCell value={values.join(", ")} linesMax={2} />;
     },
   },
@@ -82,6 +75,15 @@ export const getOrderItemColumns = ({
       <div className="text-right">
         ${row.original.amount === "0" ? "0" : row.original.amount.toString()}
       </div>
+    ),
+  },
+  {
+    id: "customText",
+    header: "TEXTO PERSONALIZADO",
+    size: 0,
+    minSize: 200,
+    cell: ({ row }) => (
+      <TruncatedCell value={row.original.customText ?? ""} linesMax={1} />
     ),
   },
   {

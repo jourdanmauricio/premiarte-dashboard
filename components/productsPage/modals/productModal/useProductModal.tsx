@@ -3,12 +3,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "sonner";
-
-import type { Category, Product, ProductCreate } from "@/shared/types";
+import { Image } from "@/shared/types/image";
 import { ProductFormSchema } from "@/shared/schemas";
 import { useCreateProduct } from "@/hooks/use-products";
 import { useUpdateProduct } from "@/hooks/use-products";
-import { Image } from "@/shared/types/image";
+import type { Category, Product, ProductCreate } from "@/shared/types";
 
 const defaultValues = {
   name: "",
@@ -17,6 +16,7 @@ const defaultValues = {
   imageId: 0,
   isActive: true,
   isFeatured: false,
+  isCustomizable: false,
   sku: "",
   stock: "0",
   retailPrice: "0",
@@ -45,6 +45,7 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
               : [],
             isFeatured: product.isFeatured,
             isActive: product.isActive,
+            isCustomizable: product.isCustomizable,
             relatedProducts: product.relatedProducts || [],
             categories: Array.isArray(product.categories)
               ? product.categories.map(
@@ -68,8 +69,12 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
             variants: (product.variants ?? []).map((v) => ({
               id: v.id,
               sku: v.sku ?? "",
-              retailPrice: typeof v.retailPrice === "number" ? v.retailPrice : undefined,
-              wholesalePrice: typeof v.wholesalePrice === "number" ? v.wholesalePrice : undefined,
+              retailPrice:
+                typeof v.retailPrice === "number" ? v.retailPrice : undefined,
+              wholesalePrice:
+                typeof v.wholesalePrice === "number"
+                  ? v.wholesalePrice
+                  : undefined,
               stock: typeof v.stock === "number" ? v.stock : undefined,
               attributes: Array.isArray(v.attributes) ? v.attributes : [],
               values: Array.isArray(v.values) ? v.values : [],
@@ -90,14 +95,23 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
       description: formData.description,
       isActive: formData.isActive,
       isFeatured: formData.isFeatured,
+      isCustomizable: formData.isCustomizable,
       sku: formData.sku,
-      stock: hasVariants ? undefined : formData.stock ? parseInt(formData.stock) : undefined,
-      retailPrice: hasVariants ? undefined : formData.retailPrice
-        ? parseFloat(formData.retailPrice)
-        : undefined,
-      wholesalePrice: hasVariants ? undefined : formData.wholesalePrice
-        ? parseFloat(formData.wholesalePrice)
-        : undefined,
+      stock: hasVariants
+        ? undefined
+        : formData.stock
+          ? parseInt(formData.stock)
+          : undefined,
+      retailPrice: hasVariants
+        ? undefined
+        : formData.retailPrice
+          ? parseFloat(formData.retailPrice)
+          : undefined,
+      wholesalePrice: hasVariants
+        ? undefined
+        : formData.wholesalePrice
+          ? parseFloat(formData.wholesalePrice)
+          : undefined,
       relatedProductIds: formData.relatedProducts,
       categoryIds: formData.categories.map((category) => category.id),
       images: formData.images as unknown as Image[],
@@ -122,8 +136,8 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
     const firstMsg =
       typeof variantsMsg === "string"
         ? variantsMsg
-        : errors.root?.message ??
-          Object.values(errors).find((e) => e?.message)?.message;
+        : (errors.root?.message ??
+          Object.values(errors).find((e) => e?.message)?.message);
     toast.error(firstMsg ?? "Revisá los datos del formulario.");
   };
 
@@ -151,4 +165,4 @@ const useProductModal = (product: Product | null, closeModal: () => void) => {
   };
 };
 
-export default useProductModal;
+export { useProductModal };
