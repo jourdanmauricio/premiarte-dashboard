@@ -8,7 +8,9 @@ export function useGetProducts() {
   return useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: async () => {
-      const products = await api.get("/products").then((res) => res.data);
+      const products = await api
+        .get("/products?isActive=false")
+        .then((res) => res.data);
       return products.data;
     },
   });

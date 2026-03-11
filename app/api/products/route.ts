@@ -10,7 +10,7 @@ export async function GET() {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
-  const { data } = await axios.get(`${API_URL}/products`, {
+  const { data } = await axios.get(`${API_URL}/products?isActive=false`, {
     headers: { Authorization: `Bearer ${session.accessToken}` },
   });
 

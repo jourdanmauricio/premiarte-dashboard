@@ -152,7 +152,7 @@ const useCategoriesPage = () => {
       XLSX.writeFile(wb, fileName);
 
       toast.success("Productos descargados exitosamente");
-    } catch (error) {
+    } catch {
       toast.error("Error al descargar los productos");
     }
   };
